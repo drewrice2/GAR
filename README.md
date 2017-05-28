@@ -1,2 +1,20 @@
 # GARG
-Genomic architecture random generation
+### Hey! You just found Genomic Architecture Randomized Generation (GARG).
+
+---
+
+GARG is built on top of [Keras](https://github.com/fchollet/keras).
+
+This project is in its very early stages at the moment and will be improved upon whenever I have time or receive PRs. Any contribution is greatly appreciated.
+
+At this point, I have only tested GARG with:
+  - Tensorflow-gpu 1.1.0
+  - Keras 2.0.4
+
+---
+
+General workflow:
+
+1. Initialize model with `model = Sequential()` and initial layer containing an `input_shape`.
+2. For each model, generate layers up to a given depth.
+3. Aggregate accuracy metrics and dump to `results.csv`.
