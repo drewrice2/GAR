@@ -69,6 +69,6 @@ for _ in range(1,10):
               verbose=1,
               validation_data=(x_test, y_test))
     score = model.evaluate(x_test, y_test, verbose=0)
-
-    results.append([score[0], score[1], architecture])
-    results.to_csv('results.csv')
+    del model
+    results.loc[-1] = [score[0], score[1], architecture]
+    results.to_csv('results.csv', ignore_index=True)
