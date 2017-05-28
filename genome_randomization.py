@@ -7,24 +7,6 @@ from keras.layers import LocallyConnected1D, LocallyConnected2D
 
 from datetime import datetime, timezone
 
-
-def main():
-    model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),
-                     activation='relu',
-                     input_shape=input_shape))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-    model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(num_classes, activation='softmax'))
-    model.compile(loss=keras.losses.categorical_crossentropy,
-                  optimizer=keras.optimizers.Adadelta(),
-                  metrics=['accuracy'])
-    return model.layers
-
 def layer_add(model, layer_name,
         node_range=[16,32,64,128,256], \
         dropout_range=[0.1,0.25,0.5], \
@@ -76,7 +58,7 @@ def add_from_list(model, layer_list, model_architecture_list):
         except ValueError as e:
             pass
 
-def generate_genome(dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[]):
+def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[], **kwargs):
     '''
     Generate basic genome from given dimension, parameters.
 
@@ -84,8 +66,6 @@ def generate_genome(dimensionality, min_depth=2, max_depth=7, net_must_start_wit
         add ability to specify layer-specific parameters on opening and closing, i.e. node_size
     '''
     # define basic model input
-    model = Sequential()
-    model.add(Dense(128, activation='relu', input_shape=(10,100,28)))
     # available functions with respect to input dimensionality
     if dimensionality == 2:
         available_funcs = ['dense','dropout','conv2d','maxpooling2d','locallyconnected2d']
@@ -107,25 +87,4 @@ def generate_genome(dimensionality, min_depth=2, max_depth=7, net_must_start_wit
                 pass
     # add must_end_with
     add_from_list(model, net_must_end_with, model_architecture)
-    return(model, model_architecture)
-
-
-# !
-
-for i in range(1,10):
-    g, m = generate_genome(2, net_must_end_with=['dense','flatten'])
-    print(m)
-
-
-
-# layer_add(model, 'dense')
-# layer_add(model, 'locallyconnected2d')
-#
-# layer_add(model, 'conv2d')
-# layer_add(model, 'maxpooling2d')
-# layer_add(model, 'dense')
-# layer_add(model,'flatten')
-#
-# layer_add(model, 'dense')
-# print(model.layers)
-# model.summary()
+    return model, model_architecture
