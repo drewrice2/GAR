@@ -5,12 +5,15 @@ from keras.datasets import mnist
 from keras import backend as K
 from genome_randomization import generate_genome
 
+import pandas as pd
+
 # MNIST test of genomes
 # some code borrowed from Keras.examples.mnist
 
+results = pd.read_csv('results.csv')
 batch_size = 128
 num_classes = 10
-epochs = 12
+epochs = 1
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -40,12 +43,14 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # genome generation
-for i in range(1,10):
+for _ in range(1,10):
+    print('------------------------------------------------------------------------------')
     model = Sequential()
     model.add(Conv2D(32, kernel_size=(3, 3),
                      activation='relu',
                      input_shape=input_shape))
-    model, architecture = generate_genome(model, dimensionality=2, min_depth=4, max_depth=15,
+
+    model, architecture = generate_genome(model, dimensionality=2, min_depth=4, max_depth=10,
         net_must_end_with=['dense','flatten'])
 
     print(architecture)
@@ -64,6 +69,6 @@ for i in range(1,10):
               verbose=1,
               validation_data=(x_test, y_test))
     score = model.evaluate(x_test, y_test, verbose=0)
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
-    print(architecture)
+
+    results.append([score[0], score[1], architecture])
+    results.to_csv('results.csv')
