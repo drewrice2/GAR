@@ -3,7 +3,7 @@
 
 ---
 
-GARG is built on top of [Keras](https://github.com/fchollet/keras).
+#### GARG is built on top of [Keras](https://github.com/fchollet/keras).
 
 This project is in its very early stages at the moment and will be improved upon whenever I have time or receive PRs. Any contribution is greatly appreciated.
 
@@ -12,8 +12,13 @@ At this point, I have only tested GARG with:
   - Keras 2.0.4
 
 ---
+### The big idea.
 
-General workflow:
+Getting the best deep neural net architecture for any problem is not easy. But, with GPUs greatly accelerating the training of nets, random genome generation can assist researchers in figuring out some basics about the problem at hand.   
+
+---
+
+#### General workflow.
 
 1. Initialize model with `model = Sequential()` and initial layer containing an `input_shape`.
 2. For each model, generate layers up to a given depth.
