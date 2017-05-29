@@ -65,10 +65,14 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
     TODO:
         add ability to specify layer-specific parameters on opening and closing, i.e. node_size
     '''
+    # check depth args
+    if min_depth > max_depth:
+        raise ValueError('Minimum depth variable: "%i" in bigger than max_depth: "%i" \n\tError occurred at: %s' % \
+            (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')))
     # define basic model input
     # available functions with respect to input dimensionality
     if dimensionality == 2:
-        available_funcs = ['dense','dropout','conv2d','maxpooling2d','locallyconnected2d']
+        available_funcs = ['dense','dropout','conv2d','maxpooling2d'] # ,'locallyconnected2d']
     if dimensionality == 1:
         available_funcs = ['dense','dropout','conv1d','maxpooling1d','locallyconnected1d']
     # generate architecture
@@ -87,4 +91,4 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
                 pass
     # add must_end_with
     add_from_list(model, net_must_end_with, model_architecture)
-    return model, model_architecture
+    return model_architecture
