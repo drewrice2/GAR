@@ -66,8 +66,8 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         add ability to specify layer-specific parameters on opening and closing, i.e. node_size
     '''
     # check depth args
-    if min_depth > max_depth:
-        raise ValueError('Minimum depth variable: "%i" in bigger than max_depth: "%i" \n\tError occurred at: %s' % \
+    if min_depth >= max_depth:
+        raise ValueError('Minimum depth variable "%i" needs to be bigger than max_depth variable "%i".\n\tError occurred at: %s' % \
             (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')))
     # define basic model input
     # available functions with respect to input dimensionality
