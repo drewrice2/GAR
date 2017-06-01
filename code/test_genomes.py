@@ -42,11 +42,8 @@ print(x_test.shape[0], 'test samples')
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
-
-# Alright, let's use GAR.
 # define how many different genomes to generate
 NUM_MODELS = 10
-
 for iteration_num in range(NUM_MODELS):
     print('# ---------------------------------------------------------------------------')
     print('#')
@@ -58,7 +55,7 @@ for iteration_num in range(NUM_MODELS):
     model.add(Conv2D(32, kernel_size=(3, 3),
                      activation='relu',
                      input_shape=input_shape))
-    # Here's GAN.
+    # Here's GAR!
     # NOTE: only the architecture list is returned for writing to results.csv
     architecture = generate_genome(model, dimensionality=2, min_depth=2, max_depth=4,
         net_must_end_with=['dense','flatten'])
