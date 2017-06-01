@@ -1,1 +1,6 @@
 architecture,test_accuracy,test_loss,timestamp
+"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9868,0.038000049596559254,2017-05-31 21:39:47 UTC
+"['conv2d', 'maxpooling2d', 'maxpooling2d', 'conv2d', 'dense', 'flatten']",0.9785,0.06473949253167957,2017-05-31 21:39:27 UTC
+"['dense', 'dense', 'dropout', 'dense', 'flatten']",0.9815,0.05613050335457083,2017-05-31 21:39:15 UTC
+"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9862,0.04382041472499259,2017-05-31 21:38:36 UTC
+"['conv2d', 'dense', 'dense', 'dropout', 'dense', 'flatten']",0.9848,0.042833428277110216,2017-05-31 21:38:21 UTC

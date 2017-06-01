@@ -50,7 +50,7 @@ NUM_MODELS = 10
 for iteration_num in range(NUM_MODELS):
     print('# ---------------------------------------------------------------------------')
     print('#')
-    print('# - Beginning model # ' + str(iteration_num))
+    print('# - Beginning model # ' + str(iteration_num+1))
     print('#')
     print('# ---------------------------------------------------------------------------')
     # begin by instantiating your model and adding the input layer
@@ -71,7 +71,7 @@ for iteration_num in range(NUM_MODELS):
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
     print('# ---------------------------------------------------------------------------')
-    print('# - Model # ' + str(iteration_num) + ' architecture = ' + str(architecture))
+    print('# - Model # ' + str(iteration_num+1) + ' architecture = ' + str(architecture))
     print('# ---------------------------------------------------------------------------')
     model.fit(x_train, y_train,
               batch_size=batch_size,
@@ -86,13 +86,13 @@ for iteration_num in range(NUM_MODELS):
         'architecture':[architecture],'timestamp':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}, index=[0])
     pd.concat([to_csv_df,results], axis=0).to_csv('results.csv', index=False)
     print('# ---------------------------------------------------------------------------')
-    print('# - Model # ' + str(iteration_num) + ' written to CSV')
+    print('# - Model # ' + str(iteration_num+1) + ' written to CSV')
     print('# ---------------------------------------------------------------------------')
     print('\n')
     # delete local objects, clear graph
     K.clear_session()
     # similar issue: https://github.com/fchollet/keras/issues/2397
     print('# ---------------------------------------------------------------------------')
-    print('# - Completed model # ' + str(iteration_num))
+    print('# - Completed model # ' + str(iteration_num+1))
     print('# ---------------------------------------------------------------------------')
     print('\n')

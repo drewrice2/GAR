@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 # ---------------------------------------------------------------------------
 # - GAR.py                                                                  -
-# -        contains the      
+# -        contains the core functionality of GAR                           -
 # ---------------------------------------------------------------------------
 
 
