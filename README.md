@@ -8,7 +8,7 @@
 This project is in its very early stages at the moment and will be improved upon whenever I have time or receive PRs. Any contribution is greatly appreciated.
 
 At this point, I have only tested GAR with:
-  - Tensorflow-gpu 1.1.0
+  - Tensorflow-gpu 1.1.0, Tensorflow 1.1.0
   - Keras 2.0.4
 
 ---
@@ -18,8 +18,8 @@ Getting the best deep neural net architecture for any problem is not easy. But, 
 
 ---
 
-#### General workflow.
+#### Existing workflow.
 
-1. Initialize model with `model = Sequential()` and initial layer containing an `input_shape`.
-2. For each model, generate layers up to a given depth.
+1. Create input layer(s).
+2. Pass the `model` object to GAR, to generate _N_ models from the base model. 
 3. Aggregate accuracy metrics and dump to `results.csv`.
