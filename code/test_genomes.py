@@ -18,7 +18,7 @@ import pandas as pd
 # data import stuff
 batch_size = 128
 num_classes = 10
-epochs = 2
+epochs = 3
 # input image dimensions
 img_rows, img_cols = 28, 28
 # the data, shuffled and split between train and test sets

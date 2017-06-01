@@ -1,9 +1,12 @@
 architecture,test_accuracy,test_loss,timestamp
-"['dropout', 'dropout', 'maxpooling2d', 'conv2d', 'dense', 'flatten']",0.9855,0.058368785961344836,2017-05-31 21:40:50 UTC
-"['dense', 'maxpooling2d', 'dense', 'dense', 'flatten']",0.9714,0.09453053299635647,2017-05-31 21:40:35 UTC
-"['conv2d', 'conv2d', 'dense', 'flatten']",0.9857,0.043117354168300516,2017-05-31 21:40:20 UTC
-"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9868,0.03800004959655925,2017-05-31 21:39:47 UTC
-"['conv2d', 'maxpooling2d', 'maxpooling2d', 'conv2d', 'dense', 'flatten']",0.9785,0.06473949253167957,2017-05-31 21:39:27 UTC
-"['dense', 'dense', 'dropout', 'dense', 'flatten']",0.9815,0.05613050335457083,2017-05-31 21:39:15 UTC
-"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9862,0.04382041472499259,2017-05-31 21:38:36 UTC
-"['conv2d', 'dense', 'dense', 'dropout', 'dense', 'flatten']",0.9848,0.042833428277110216,2017-05-31 21:38:21 UTC
+"['dense', 'dense', 'dense', 'flatten']",0.815,0.559239116669,2017-05-31 23:51:45 UTC
+"['dense', 'conv2d', 'maxpooling2d', 'dense', 'dense', 'flatten']",0.576,1.3219753952,2017-05-31 23:51:24 UTC
+"['maxpooling2d', 'conv2d', 'conv2d', 'dense', 'dense', 'flatten']",0.495,1.53103349304,2017-05-31 23:51:02 UTC
+"['dropout', 'dropout', 'maxpooling2d', 'conv2d', 'dense', 'flatten']",0.9855,0.0583687859613,2017-05-31 21:40:50 UTC
+"['dense', 'maxpooling2d', 'dense', 'dense', 'flatten']",0.9714,0.0945305329964,2017-05-31 21:40:35 UTC
+"['conv2d', 'conv2d', 'dense', 'flatten']",0.9857,0.0431173541683,2017-05-31 21:40:20 UTC
+"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9868,0.0380000495966,2017-05-31 21:39:47 UTC
+"['conv2d', 'maxpooling2d', 'maxpooling2d', 'conv2d', 'dense', 'flatten']",0.9785,0.0647394925317,2017-05-31 21:39:27 UTC
+"['dense', 'dense', 'dropout', 'dense', 'flatten']",0.9815,0.0561305033546,2017-05-31 21:39:15 UTC
+"['maxpooling2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9862,0.043820414725,2017-05-31 21:38:36 UTC
+"['conv2d', 'dense', 'dense', 'dropout', 'dense', 'flatten']",0.9848,0.0428334282771,2017-05-31 21:38:21 UTC
