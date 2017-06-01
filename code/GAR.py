@@ -12,7 +12,6 @@ from datetime import datetime, timezone
 # -        contains the core functionality of GAR                           -
 # ---------------------------------------------------------------------------
 
-
 def layer_add(model, layer_name,
         node_range=[16,32,64,128,256], \
         dropout_range=[0.1,0.25,0.5], \
@@ -21,13 +20,16 @@ def layer_add(model, layer_name,
         activation_funcs=['relu']):
 
     '''
-    Generate a layer from a given layer name.
+    # Generate a layer from a given layer name.
 
-    Supported layers:
+    # Supported layers:
         Dense, Dropout, Flatten, Conv2D, MaxPooling2D, LocallyConnected2D
 
         TODO:
-            MaxPooling1D, Conv1D, LocallyConnected1D,
+            MaxPooling1D, Conv1D, LocallyConnected1D
+
+    # raises
+        ValueError, if layer_name is not recognized
     '''
     layer_name = layer_name.lower()
     node_size = random.choice(node_range)
@@ -55,7 +57,7 @@ def layer_add(model, layer_name,
 
 def add_from_list(model, layer_list, model_architecture_list):
     '''
-    Recevies a list and adds the given layers to the model.
+    # Recevies a list and adds the given layers to the model.
     '''
     for layer in layer_list:
         try:
@@ -66,10 +68,13 @@ def add_from_list(model, layer_list, model_architecture_list):
 
 def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[], **kwargs):
     '''
-    Generate basic genome from given dimension, parameters.
+    # Generate basic genome from given dimension, parameters.
 
-    TODO:
+    # TODO:
         add ability to specify layer-specific parameters on opening and closing, i.e. node_size
+
+    # Raises:
+        ValueError, if min_depth and max_depth are incorrectly sized
     '''
     # check depth args
     if min_depth >= max_depth:
