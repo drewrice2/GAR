@@ -10,7 +10,7 @@ import pandas as pd
 
 # ---------------------------------------------------------------------------
 # - test_genomes.py                                                         -
-# -        this sript is designed to test the functionality of GAR          -
+# -        this script is designed to test the functionality of GAR         -
 # ---------------------------------------------------------------------------
 
 # First, let's import some MNIST data from Keras.examples.mnist
