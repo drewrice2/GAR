@@ -13,8 +13,8 @@ This project is in its very early stages at the moment and will be improved upon
 
 At this point, I have only tested GAR with:
   - Keras 2.0.4
-  - Tensorflow-gpu 1.1.0, Windows 10, CUDA 8.0, cuDNN 5.1
-  - Tensorflow 1.1.0, MacOS
+  - Tensorflow-gpu 1.1.0, Windows 10, CUDA 8.0, cuDNN 5.1, Python 3.5.2
+  - Tensorflow 1.1.0, MacOS, Python 2.7.X
   
 ---
 #### Existing workflow.
