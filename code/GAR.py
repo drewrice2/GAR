@@ -4,8 +4,14 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Conv1D, MaxPooling1D
 from keras.layers import LocallyConnected1D, LocallyConnected2D
-
 from datetime import datetime, timezone
+
+
+# ---------------------------------------------------------------------------
+# - GAR.py                                                                  -
+# -        contains the      
+# ---------------------------------------------------------------------------
+
 
 def layer_add(model, layer_name,
         node_range=[16,32,64,128,256], \
