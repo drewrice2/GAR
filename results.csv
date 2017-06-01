@@ -1,4 +1,0 @@
-Test_loss, Test_accuracy, Architecture, timestamp
-0.040897348346340005,0.9855,"['dense', 'dropout', 'dense', 'flatten']",2017-05-29 15:29:26 UTC
-0.04779287149036536,0.9839,"['dense', 'conv2d', 'maxpooling2d', 'dense', 'flatten']",2017-05-29 15:35:45 UTC
-0.04271611155895516,0.9865,"['conv2d', 'dropout', 'maxpooling2d', 'dense', 'flatten']",2017-05-29 15:50:52 UTC

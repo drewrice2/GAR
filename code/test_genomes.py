@@ -4,18 +4,20 @@ from keras.layers import Dense, Dropout, Flatten, Conv2D
 from keras.datasets import mnist
 from keras import backend as K
 import tensorflow as tf
-from genome_randomization import generate_genome
+from GAR import generate_genome
 import datetime
-
 import pandas as pd
 
-# MNIST test of genomes
-# some code borrowed from Keras.examples.mnist
+# ---------------------------------------------------------------------------
+# - test_genomes.py                                                         -
+# -        this sript is designed to test the functionality of GAR          -
+# -
 
-results = pd.read_csv('results.csv')
+# MNIST test of genomes
+# code borrowed from Keras.examples.mnist
 batch_size = 128
 num_classes = 10
-epochs = 3
+epochs = 2
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -45,7 +47,7 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # genome generation
-for _ in range(2):
+for _ in range(4):
     print('------------------------------------------------------------------------------')
     model = Sequential()
     model.add(Conv2D(32, kernel_size=(3, 3),
@@ -63,17 +65,27 @@ for _ in range(2):
                   metrics=['accuracy'])
     print('\n\n')
     print(architecture)
+    print('\n\n')
+
     model.fit(x_train, y_train,
               batch_size=batch_size,
               epochs=epochs,
               verbose=1,
               validation_data=(x_test, y_test))
+    print('\n\n')
+    print('------------------------------------------------------------------------------')
+    print('Fitted.')
+    print('\n\n')
     score = model.evaluate(x_test, y_test, verbose=0)
-
+    results = pd.read_csv('results.csv')
     # dump to CSV
-    results.loc[-1] = [score[0], score[1], architecture, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')]
-    results.to_csv('results.csv', index=False)
+    to_csv_df = pd.DataFrame({'test_loss':score[0], 'test_accuracy':score[1],\
+        'architecture':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}, index=[0])
+    print('\n\n')
+    print('------------------------------------------------------------------------------')
+    print('Write to CSV prepared.')
+    print('\n\n')
+    pd.concat([to_csv_df,results], axis=0).to_csv('results.csv', index=False)
     # delete local objects, clear graph
-    tf.reset_default_graph()
-    del model
+    K.clear_session()
     # similar issue: https://github.com/fchollet/keras/issues/2397
