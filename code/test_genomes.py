@@ -13,7 +13,8 @@ import pandas as pd
 # -        this script is designed to test the functionality of GAR         -
 # ---------------------------------------------------------------------------
 
-# First, let's import some MNIST data from Keras.examples.mnist
+# First, let's import some MNIST data
+# code borrowed from Keras.examples.mnist
 
 # data import stuff
 batch_size = 128
