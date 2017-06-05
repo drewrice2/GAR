@@ -12,7 +12,7 @@ from datetime import datetime
 # -        contains the core functionality of GAR                           -
 # ---------------------------------------------------------------------------
 
-def layer_add(model, layer_name,
+def layer_add(layer_name,
         node_range=[16,32,64,128,256], \
         dropout_range=[0.1,0.25,0.5], \
         pool_or_kernel_range_2D=[(2,2),(3,3),(4,4)], \
