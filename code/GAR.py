@@ -124,5 +124,5 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
             except ValueError as e:
                 pass
     # add must_end_with
-    add_from_list(model, net_must_end_with, model_architecture)
+    model_architecture = add_from_list(model, net_must_end_with, model_architecture)
     return model_architecture
