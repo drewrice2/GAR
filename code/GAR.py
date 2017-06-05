@@ -28,8 +28,10 @@ def layer_add(layer_name,
         TODO:
             MaxPooling1D, Conv1D, LocallyConnected1D
 
-    # Raises
-        ValueError, if layer_name is not recognized
+    # Raises:
+        ValueError, if 'layer_name' is not recognized
+
+    # Returns: layer object.
     '''
     layer_name = layer_name.lower()
     node_size = random.choice(node_range)
@@ -60,6 +62,8 @@ def layer_add(layer_name,
 def add_from_list(model, layer_list, model_architecture_list):
     '''
     # Recevies a list and adds the given layers to the model.
+
+    # Returns: model architecture list.
     '''
     for layer_name in layer_list:
         try:
@@ -68,6 +72,7 @@ def add_from_list(model, layer_list, model_architecture_list):
             model.add(layer_to_add)
         except ValueError as e:
             pass
+        return model_architecture
 
 def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[]):
     '''
@@ -77,7 +82,8 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         add ability to specify layer-specific parameters on opening and closing, i.e. node_size
 
     # Raises:
-        ValueError, if min_depth and max_depth are incorrectly sized
+        ValueError, if 'min_depth' and 'max_depth' are incorrectly sized
+        TypeError, if 'net_must_start_with' & 'net_must_end_with' are not lists
     '''
     # check depth args
     if min_depth >= max_depth:
@@ -93,17 +99,20 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         msg = 'Argument "net_must_end_with" must be a list.\n\tError occurred at: %s' % \
             (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
         raise TypeError(msg)
-    # define basic model input
-    # available functions with respect to input dimensionality
+    # check dimensionality, define universe of available functions
     if dimensionality == 2:
         available_funcs = ['dense','dropout','conv2d','maxpooling2d'] # ,'locallyconnected2d']
-    if dimensionality == 1:
+    elif dimensionality == 1:
         available_funcs = ['dense','dropout','conv1d','maxpooling1d','locallyconnected1d']
+    else:
+        msg = 'Dimensionality must be "1" or "2".\n\tError occurred at: %s' % \
+            (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+        raise ValueError(msg)
     # generate architecture
     model_architecture = []
     net_size = random.randint(min_depth, max_depth)
     # add must_start_with
-    add_from_list(model, net_must_start_with, model_architecture)
+    model_architecture = add_from_list(model, net_must_start_with, model_architecture)
     for _ in range(net_size):
         while True:
             layer = random.choice(available_funcs)
