@@ -19,7 +19,6 @@ def layer_add(layer_name,
         pool_or_kernel_range_2D=[(2,2),(3,3),(4,4)], \
         pool_or_kernel_range_1D=[2,3,4,6], \
         activation_funcs=['relu']):
-
     '''
     # Generate a layer from a given layer name.
 
@@ -85,6 +84,15 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         msg = 'Minimum depth variable "%i" needs to be bigger than max_depth variable "%i".\n\tError occurred at: %s' % \
             (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
         raise ValueError(msg)
+    # check net_must_start_with & net_must_end_with types
+    if type(net_must_start_with) != list:
+        msg = 'Argument "net_must_start_with" must be a list.\n\tError occurred at: %s' % \
+            (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+        raise TypeError(msg)
+    if type(net_must_end_with) != list:
+        msg = 'Argument "net_must_end_with" must be a list.\n\tError occurred at: %s' % \
+            (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+        raise TypeError(msg)
     # define basic model input
     # available functions with respect to input dimensionality
     if dimensionality == 2:
