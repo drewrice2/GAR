@@ -28,45 +28,48 @@ def layer_add(model, layer_name,
         TODO:
             MaxPooling1D, Conv1D, LocallyConnected1D
 
-    # raises
+    # Raises
         ValueError, if layer_name is not recognized
     '''
     layer_name = layer_name.lower()
     node_size = random.choice(node_range)
     if layer_name == 'dense':
-        model.add(Dense(node_size))
+        layer = Dense(node_size)
     elif layer_name == 'dropout':
-        model.add(Dropout(random.choice(dropout_range)))
+        layer = Dropout(random.choice(dropout_range))
     elif layer_name == 'flatten':
-        model.add(Flatten())
+        layer = Flatten()
     # elif layer_name == 'conv1d':
     #     model.add(Conv1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs)))
     elif layer_name == 'conv2d':
-        model.add(Conv2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs)))
+        layer = Conv2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs))
     # elif layer_name == 'maxpooling1d':
     #     model.add(MaxPooling1D(random.choice(pool_or_kernel_range_1D)))
     elif layer_name == 'maxpooling2d':
-        model.add(MaxPooling2D(random.choice(pool_or_kernel_range_2D)))
+        layer = MaxPooling2D(random.choice(pool_or_kernel_range_2D))
     elif layer_name == 'locallyconnected1d':
-        model.add(LocallyConnected1D(node_size, random.choice(pool_or_kernel_range_1D)))
+        layer = LocallyConnected1D(node_size, random.choice(pool_or_kernel_range_1D))
     elif layer_name == 'locallyconnected2d':
-        model.add(LocallyConnected2D(node_size, random.choice(pool_or_kernel_range_2D)))
+        layer = LocallyConnected2D(node_size, random.choice(pool_or_kernel_range_2D))
     else: # layer unrecognized and not added
-        raise ValueError('Could not find "%s" in supported layers. \n\tError occurred at: %s' % \
-            (layer_name, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')))
+        msg = 'Could not find "%s" in supported layers. \n\tError occurred at: %s' % \
+            (layer_name, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+        raise ValueError(msg)
+    return layer
 
 def add_from_list(model, layer_list, model_architecture_list):
     '''
     # Recevies a list and adds the given layers to the model.
     '''
-    for layer in layer_list:
+    for layer_name in layer_list:
         try:
-            layer_add(model, layer)
-            model_architecture_list.append(layer)
+            layer_to_add = layer_add(layer_name)
+            model_architecture_list.append(layer_name)
+            model.add(layer_to_add)
         except ValueError as e:
             pass
 
-def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[], **kwargs):
+def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[]):
     '''
     # Generate basic genome from given dimension, parameters.
 
@@ -78,8 +81,9 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
     '''
     # check depth args
     if min_depth >= max_depth:
-        raise ValueError('Minimum depth variable "%i" needs to be bigger than max_depth variable "%i".\n\tError occurred at: %s' % \
-            (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')))
+        msg = 'Minimum depth variable "%i" needs to be bigger than max_depth variable "%i".\n\tError occurred at: %s' % \
+            (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+        raise ValueError(msg)
     # define basic model input
     # available functions with respect to input dimensionality
     if dimensionality == 2:
@@ -95,8 +99,9 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         while True:
             layer = random.choice(available_funcs)
             try:
-                layer_add(model, layer)
+                layer_to_add = layer_add(layer)
                 model_architecture.append(layer)
+                model.add(layer_to_add)
                 break
             except ValueError as e:
                 pass
