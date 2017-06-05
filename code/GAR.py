@@ -6,11 +6,12 @@ from keras.layers import Conv1D, MaxPooling1D
 from keras.layers import LocallyConnected1D, LocallyConnected2D
 from datetime import datetime
 
-
-# ---------------------------------------------------------------------------
-# - GAR.py                                                                  -
-# -        contains the core functionality of GAR                           -
-# ---------------------------------------------------------------------------
+# --------------------------------------------------
+# -                                                -
+# -  GAR.py                                        -
+# -        contains the core functionality of GAR  -
+# -                                                -
+# --------------------------------------------------
 
 def layer_add(layer_name,
         node_range=[16,32,64,128,256], \
