@@ -72,7 +72,7 @@ def add_from_list(model, layer_list, model_architecture_list):
             model.add(layer_to_add)
         except ValueError as e:
             pass
-    return model_architecture
+    return model_architecture_list
 
 def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[]):
     '''
