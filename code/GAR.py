@@ -72,7 +72,7 @@ def add_from_list(model, layer_list, model_architecture_list):
             model.add(layer_to_add)
         except ValueError as e:
             pass
-        return model_architecture
+    return model_architecture
 
 def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_start_with=[], net_must_end_with=[]):
     '''
@@ -85,12 +85,13 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         ValueError, if 'min_depth' and 'max_depth' are incorrectly sized
         TypeError, if 'net_must_start_with' & 'net_must_end_with' are not lists
     '''
+    # ERROR HANDLING !
     # check depth args
     if min_depth >= max_depth:
         msg = 'Minimum depth variable "%i" needs to be bigger than max_depth variable "%i".\n\tError occurred at: %s' % \
             (min_depth, max_depth, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
         raise ValueError(msg)
-    # check net_must_start_with & net_must_end_with types
+    # check net_must_start_with & net_must_end_with data types
     if type(net_must_start_with) != list:
         msg = 'Argument "net_must_start_with" must be a list.\n\tError occurred at: %s' % \
             (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
@@ -99,6 +100,7 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         msg = 'Argument "net_must_end_with" must be a list.\n\tError occurred at: %s' % \
             (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
         raise TypeError(msg)
+
     # check dimensionality, define universe of available functions
     if dimensionality == 2:
         available_funcs = ['dense','dropout','conv2d','maxpooling2d'] # ,'locallyconnected2d']
