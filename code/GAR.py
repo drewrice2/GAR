@@ -32,27 +32,34 @@ def layer_add(layer_name,
         ValueError, if 'layer_name' is not recognized
 
     # Returns: layer object.
+
+    # TODO! accept 'parameters' dictionary with 'layer_name','num_nodes','activation_func'
     '''
+    # random selections done upfront
     layer_name = layer_name.lower()
     node_size = random.choice(node_range)
+    activation = random.choice(activation_funcs)
+    kernel_or_pool_size_2d = random.choice(pool_or_kernel_range_2D)
+    kernel_or_pool_size_1d = random.choice(pool_or_kernel_range_1D)
+
     if layer_name == 'dense':
-        layer = Dense(node_size)
+        layer = Dense(units=node_size, activation=activation)
     elif layer_name == 'dropout':
-        layer = Dropout(random.choice(dropout_range, activation=random.choice(activation_funcs)))
+        layer = Dropout(random.choice(dropout_range))
     elif layer_name == 'flatten':
         layer = Flatten()
     elif layer_name == 'conv1d':
-        model.add(Conv1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs)))
+        model.add(Conv1D(filters=node_size, kernel_size=kernel_or_pool_size_1d, activation=activation))
     elif layer_name == 'conv2d':
-        layer = Conv2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs))
+        layer = Conv2D(filters=node_size, kernel_size=kernel_or_pool_size_2d, activation=activation))
     elif layer_name == 'maxpooling1d':
-        model.add(MaxPooling1D(random.choice(pool_or_kernel_range_1D)))
+        model.add(MaxPooling1D(pool_size=pool_or_kernel_range_1D))
     elif layer_name == 'maxpooling2d':
-        layer = MaxPooling2D(random.choice(pool_or_kernel_range_2D))
+        layer = MaxPooling2D(pool_size=pool_or_kernel_range_2D))
     elif layer_name == 'locallyconnected1d':
-        layer = LocallyConnected1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs))
+        layer = LocallyConnected1D(filters=node_size, kernel_size=pool_or_kernel_range_1D, activation=activation)
     elif layer_name == 'locallyconnected2d':
-        layer = LocallyConnected2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs))
+        layer = LocallyConnected2D(filters=node_size, kernel_size=pool_or_kernel_range_2D, activation=activation)
     else: # layer unrecognized and not added
         msg = 'Could not find "%s" in supported layers. \n\tError occurred at: %s' % \
             (layer_name, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
