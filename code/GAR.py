@@ -26,7 +26,7 @@ def layer_add(layer_name,
         Dense, Dropout, Flatten, Conv2D, MaxPooling2D, LocallyConnected2D
 
         TODO:
-            MaxPooling1D, Conv1D, LocallyConnected1D
+            MaxPooling1D, Conv1D, LocallyConnected1D, BatchNormalization
 
     # Raises:
         ValueError, if 'layer_name' is not recognized
@@ -38,21 +38,21 @@ def layer_add(layer_name,
     if layer_name == 'dense':
         layer = Dense(node_size)
     elif layer_name == 'dropout':
-        layer = Dropout(random.choice(dropout_range))
+        layer = Dropout(random.choice(dropout_range, activation=random.choice(activation_funcs)))
     elif layer_name == 'flatten':
         layer = Flatten()
-    # elif layer_name == 'conv1d':
-    #     model.add(Conv1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs)))
+    elif layer_name == 'conv1d':
+        model.add(Conv1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs)))
     elif layer_name == 'conv2d':
         layer = Conv2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs))
-    # elif layer_name == 'maxpooling1d':
-    #     model.add(MaxPooling1D(random.choice(pool_or_kernel_range_1D)))
+    elif layer_name == 'maxpooling1d':
+        model.add(MaxPooling1D(random.choice(pool_or_kernel_range_1D)))
     elif layer_name == 'maxpooling2d':
         layer = MaxPooling2D(random.choice(pool_or_kernel_range_2D))
     elif layer_name == 'locallyconnected1d':
-        layer = LocallyConnected1D(node_size, random.choice(pool_or_kernel_range_1D))
+        layer = LocallyConnected1D(node_size, random.choice(pool_or_kernel_range_1D), activation=random.choice(activation_funcs))
     elif layer_name == 'locallyconnected2d':
-        layer = LocallyConnected2D(node_size, random.choice(pool_or_kernel_range_2D))
+        layer = LocallyConnected2D(node_size, random.choice(pool_or_kernel_range_2D), activation=random.choice(activation_funcs))
     else: # layer unrecognized and not added
         msg = 'Could not find "%s" in supported layers. \n\tError occurred at: %s' % \
             (layer_name, datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
