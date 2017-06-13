@@ -1,3 +1,10 @@
 architecture,test_accuracy,test_loss,timestamp
-"['dropout', 'dense', 'dense', 'flatten']",0.9846,0.04706824918491766,2017-06-05 22:40:33 UTC
-"['dropout', 'dense', 'dense', 'flatten']",0.9866,0.03941931747425115,2017-06-05 22:39:51 UTC
+"['conv2d', 'dense', 'dense', 'flatten']",0.9875,0.03742045445166878,2017-06-12 23:20:21 UTC
+"['dense', 'dense', 'conv2d', 'dense', 'flatten']",0.9858,0.04552323500395287,2017-06-12 23:19:03 UTC
+"['conv2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9903,0.032346736173392864,2017-06-12 23:18:11 UTC
+"['dense', 'dense', 'conv2d', 'dense', 'flatten']",0.9869,0.03967505206851056,2017-06-12 23:16:54 UTC
+"['dropout', 'dense', 'conv2d', 'dense', 'dense', 'flatten']",0.9862,0.04196751054676715,2017-06-12 23:15:45 UTC
+"['conv2d', 'dense', 'dense', 'flatten']",0.9897,0.03329409441391472,2017-06-12 23:14:32 UTC
+"['conv2d', 'conv2d', 'dropout', 'dense', 'flatten']",0.9869,0.04069928229775397,2017-06-12 23:12:56 UTC
+"['conv2d', 'dense', 'dense', 'dense', 'flatten']",0.9858,0.04256407854710705,2017-06-12 23:12:17 UTC
+"['dense', 'conv2d', 'dense', 'dense', 'dense', 'flatten']",0.9842,0.04501940986156697,2017-06-12 23:01:27 UTC

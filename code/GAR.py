@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -109,10 +110,14 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
         raise TypeError(msg)
 
     # check dimensionality, define universe of available functions
+    # TODO: infer from input dimensions
     if dimensionality == 2:
-        available_funcs = ['dense','dropout','conv2d','maxpooling2d'] # ,'locallyconnected2d']
+        available_funcs = ['conv2d','dense','dropout','maxpooling2d'] # ,'locallyconnected2d']
     elif dimensionality == 1:
-        available_funcs = ['dense','dropout','conv1d','maxpooling1d','locallyconnected1d']
+        # available_funcs = ['dense','dropout','conv1d','maxpooling1d','locallyconnected1d']
+        # only supporting 2 dimensional data at this point
+        msg = 'Not supporting 1D...Only supporting 2 dimensional data at this point.'
+        raise ValueError(msg)
     else:
         msg = 'Dimensionality must be "1" or "2".\n\tError occurred at: %s' % \
             (datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
@@ -122,9 +127,9 @@ def generate_genome(model, dimensionality, min_depth=2, max_depth=7, net_must_st
     net_size = random.randint(min_depth, max_depth)
     # add must_start_with
     model_architecture = add_from_list(model, net_must_start_with, model_architecture)
-    for _ in range(net_size):
+    for _ in range(net_size): # being done one layer at a time to only generate working nets
         while True:
-            layer = random.choice(available_funcs)
+            layer = np.random.choice(available_funcs, 1, p=[0.35,0.35,0.1,0.2])[0]
             try:
                 layer_to_add = layer_add(layer)
                 model_architecture.append(layer)
