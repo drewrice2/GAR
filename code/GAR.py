@@ -25,7 +25,7 @@ def layer_add(layer_name,
     # Supported layers:
         Dense, Dropout, Flatten, Conv2D, MaxPooling2D, LocallyConnected2D
 
-        TODO:
+        Future layers:
             MaxPooling1D, Conv1D, LocallyConnected1D, BatchNormalization
 
     # Raises:
@@ -51,11 +51,11 @@ def layer_add(layer_name,
     elif layer_name == 'conv1d':
         model.add(Conv1D(filters=node_size, kernel_size=kernel_or_pool_size_1d, activation=activation))
     elif layer_name == 'conv2d':
-        layer = Conv2D(filters=node_size, kernel_size=kernel_or_pool_size_2d, activation=activation))
+        layer = Conv2D(filters=node_size, kernel_size=kernel_or_pool_size_2d, activation=activation)
     elif layer_name == 'maxpooling1d':
-        model.add(MaxPooling1D(pool_size=pool_or_kernel_range_1D))
+        layer = MaxPooling1D(pool_size=pool_or_kernel_range_1D)
     elif layer_name == 'maxpooling2d':
-        layer = MaxPooling2D(pool_size=pool_or_kernel_range_2D))
+        layer = MaxPooling2D(pool_size=pool_or_kernel_range_2D)
     elif layer_name == 'locallyconnected1d':
         layer = LocallyConnected1D(filters=node_size, kernel_size=pool_or_kernel_range_1D, activation=activation)
     elif layer_name == 'locallyconnected2d':
