@@ -81,7 +81,7 @@ class Genome:
         # Randomize layers until self.max_depth is reached.
         '''
         # if dimensionality == 2: generate num_conv_layers randomly
-        # use self.available_layers
+        # if 'conv2d' in self.available_layers: do conv block
         while len(self.model.layers) < self.max_depth:
             pass
         pass
