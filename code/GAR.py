@@ -14,6 +14,8 @@ from datetime import datetime
 # -                                                -
 # --------------------------------------------------
 
+# TODO: support more stuff
+
 class Genome:
 
     def __init__(self, net_must_start_with=[], net_must_end_with=[], dimensionality=2,
@@ -27,7 +29,6 @@ class Genome:
 
         def typecheck_and_error_handle():
             # !
-            # TODO: support more stuff
             if self.dimensionality != 2:
                 msg = "Only supporting 2D convolutional nets at this time. Change parameter 'dimensionality'."
                 raise ValueError(msg)
@@ -56,6 +57,8 @@ class Genome:
         # run typechecking
         typecheck_and_error_handle()
 
+
+    # ~ OUTLINE ~
     # based on 'layer' parameter, check for relevant variables (first requires 'input_layer')
     # for what's left off, randomization
     #       if 'key' in dict.keys(): blah
@@ -64,7 +67,7 @@ class Genome:
     #   model.add
 
     def randomize_layers():
-        while len(self.model) < self.max_depth:
+        while len(self.model.layers) < self.max_depth:
             pass
         pass
 
@@ -77,7 +80,7 @@ class Genome:
         '''
         for layer_dictionary in list_of_layers:
             pass
-            
+
     def clear_memory():
         pass
 
@@ -98,14 +101,23 @@ class Genome:
         pool_or_kernel_range_2D = [(2,2),(3,3),(4,4)]
         pool_or_kernel_range_1D = [2,3,4,6]
         activation_funcs = ['relu']
+        # dictionary for parameter pass
+        keras_layer_parameters = {}
 
+        # fundamental parameter checking
         if 'layer_name' in layer_dictionary.keys():
             layer_dictionary['layer_name'] = layer_dictionary['layer_name'].lower()
         else:
             msg = "Each layer requires supported a 'layer_name'."
             raise ValueError(msg)
-        # dictionary and parameter pass
-        keras_layer_parameters = {}
+        # check for parameter 'input_shape'
+        if len(self.model.layers) == 0:
+            if 'input_shape' in layer_dictionary.keys():
+                keras_layer_parameters['input_shape'] = layer_dictionary['input_shape']
+            else:
+                msg = "First model layer requires parameter 'input_shape'."
+                raise ValueError(msg)
+
         # Dense layer
         if layer_dictionary['layer_name'] == 'dense':
             if 'units' in layer_dictionary.keys():
