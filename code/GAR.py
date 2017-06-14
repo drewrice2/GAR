@@ -78,7 +78,7 @@ class Genome:
 
     def randomize_layers():
         '''
-        # Randomize layers until self.max_depth is reached.
+        # Randomize layers until `self.max_depth` is reached.
         '''
         # if dimensionality == 2: generate num_conv_layers randomly
         # if 'conv2d' in self.available_layers: do conv block
@@ -89,26 +89,30 @@ class Genome:
     def add_layer_dict_to_model():
         '''
         # Receives a one-layer dictionary. Interprets and adds to self.model.
-            Writes to self.architecture list.
+            Writes to `self.architecture` list.
         '''
         pass
 
     def add_from_list(self, list_of_layers):
         '''
-        # Input: list_of_layers to run through self.interpret_layer_dict
+        # Input: list_of_layers to run through `self.interpret_layer_dict`.
+            Called on `self.net_must_start_with`, `self.net_must_end_with`.
         '''
         for layer_dictionary in list_of_layers:
             pass
 
     def clear_memory():
+        '''
+        # Delete any large variables from memory. TBD on what they are.
+        '''
         pass
 
     def interpret_layer_dict(self, layer_dictionary):
         '''
         # Interprets a single-layer dictionary.
 
-        # Returns: dictionary of 'layer_name':'parameters'
-            where the 'parameters' dict is fed directly into a Keras layer object
+        # Returns: dictionary of `layer_name`:`parameters`
+            where the `parameters` dict is fed directly into a Keras layer object
 
         # TODO: support Conv1D, LocallyConnected1D, LocallyConnected2D
         '''
