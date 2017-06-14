@@ -125,7 +125,7 @@ class Genome:
             else:
                 keras_layer_parameters['units'] = random.choice(node_range)
             if 'activation' in layer_dictionary.keys():
-                keras_layer_parameters['activation'] = layer_dictionary.['activation']
+                keras_layer_parameters['activation'] = layer_dictionary['activation']
             else:
                 keras_layer_parameters['activation'] = random.choice(activation_funcs)
         # Dropout
@@ -145,7 +145,7 @@ class Genome:
             else:
                 keras_layer_parameters['kernel_size'] = random.choice(pool_or_kernel_range_2D)
             if 'activation' in layer_dictionary.keys():
-                keras_layer_parameters['activation'] = layer_dictionary.['activation']
+                keras_layer_parameters['activation'] = layer_dictionary['activation']
             else:
                 keras_layer_parameters['activation'] = random.choice(activation_funcs)
             conv_filter_range
