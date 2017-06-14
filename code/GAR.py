@@ -35,6 +35,7 @@ class Genome:
         self.pool_or_kernel_range_1D = [2,3,4,6]
         self.activation_funcs = ['relu']
 
+        # TODO: allow users to adjust available_layers parameter
 
         def typecheck_and_error_handle():
             # !
@@ -79,6 +80,8 @@ class Genome:
         '''
         # Randomize layers until self.max_depth is reached.
         '''
+        # if dimensionality == 2: generate num_conv_layers randomly
+        # use self.available_layers
         while len(self.model.layers) < self.max_depth:
             pass
         pass
