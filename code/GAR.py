@@ -26,6 +26,7 @@ class Genome:
         self.min_depth = min_depth
         self.max_depth = max_depth
         self.model = Sequential() # only supporting Sequential models initially
+        self.architecture = []
 
         def typecheck_and_error_handle():
             # !
@@ -77,6 +78,7 @@ class Genome:
     def add_layer_dict_to_model():
         '''
         # Receives a one-layer dictionary. Interprets and adds to self.model.
+            Writes to self.architecture list.
         '''
         pass
 
