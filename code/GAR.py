@@ -67,16 +67,22 @@ class Genome:
     #   model.add
 
     def randomize_layers():
+        '''
+        # Randomize layers until self.max_depth is reached.
+        '''
         while len(self.model.layers) < self.max_depth:
             pass
         pass
 
     def add_layer_dict_to_model():
+        '''
+        # Receives a one-layer dictionary. Interprets and adds to self.model.
+        '''
         pass
 
     def add_from_list(self, list_of_layers):
         '''
-        # Input: list_of_layers to run through interpret_layer_dict
+        # Input: list_of_layers to run through self.interpret_layer_dict
         '''
         for layer_dictionary in list_of_layers:
             pass
