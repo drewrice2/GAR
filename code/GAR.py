@@ -27,33 +27,41 @@ class Genome:
         self.max_depth = max_depth
         self.model = Sequential() # only supporting Sequential models initially
         self.architecture = []
+        # network variable initializations
+        self.node_range = [16,32,64,128,256]
+        self.conv_filter_range = [16,32,64,128,256]
+        self.dropout_range = [0.1,0.25,0.5]
+        self.pool_or_kernel_range_2D = [(2,2),(3,3),(4,4)]
+        self.pool_or_kernel_range_1D = [2,3,4,6]
+        self.activation_funcs = ['relu']
+
 
         def typecheck_and_error_handle():
             # !
             if self.dimensionality != 2:
-                msg = "Only supporting 2D convolutional nets at this time. Change parameter 'dimensionality'."
+                msg = "Only supporting 2D convolutional nets at this time. Change parameter `dimensionality`."
                 raise ValueError(msg)
             # initial type checking
             if type(self.dimensionality) != int:
-                msg = "Parameter 'dimensionality' must be of type <class 'int'>. Found %s" % (type(self.dimensionality))
+                msg = "Parameter `dimensionality` must be of type <class 'int'>. Found %s" % (type(self.dimensionality))
                 raise TypeError(msg)
             if type(self.min_depth) != int:
-                msg = "Parameter 'min_depth' must be of type <class 'int'>. Found %s" % (type(self.min_depth))
+                msg = "Parameter `min_depth` must be of type <class 'int'>. Found %s" % (type(self.min_depth))
                 raise TypeError(msg)
             if type(self.max_depth) != int:
-                msg = "Parameter 'max_depth' must be of type <class 'int'>. Found %s" % (type(self.max_depth))
+                msg = "Parameter `max_depth` must be of type <class 'int'>. Found %s" % (type(self.max_depth))
                 raise TypeError(msg)
             if type(self.net_must_start_with) != list:
-                msg = "Parameter 'net_must_start_with' must be of type <class 'list'>. Found %s" % (type(self.net_must_start_with))
+                msg = "Parameter `net_must_start_with` must be of type <class 'list'>. Found %s" % (type(self.net_must_start_with))
                 raise TypeError(msg)
             if type(self.net_must_end_with) != list:
-                msg = "Parameter 'net_must_end_with' must be of type <class 'list'>. Found %s" % (type(self.net_must_end_with))
+                msg = "Parameter `net_must_end_with` must be of type <class 'list'>. Found %s" % (type(self.net_must_end_with))
                 raise TypeError(msg)
             if self.max_depth < self.min_depth:
-                msg = "Parameter 'max_depth' must be greater than or equal to 'min_depth'."
+                msg = "Parameter `max_depth` must be greater than or equal to `min_depth`."
                 raise ValueError(msg)
             if (len(self.net_must_start_with) >= self.max_depth) or (len(self.net_must_end_with) >= self.max_depth):
-                msg = "Net size too bit for max_depth. Check parameters: 'max_depth, 'net_must_start_with', 'net_must_end_with'"
+                msg = "Net size too bit for max_depth. Check parameters: `max_depth`, `net_must_start_with`, `net_must_end_with`."
                 raise ValueError(msg)
         # run typechecking
         typecheck_and_error_handle()
@@ -92,7 +100,6 @@ class Genome:
     def clear_memory():
         pass
 
-
     def interpret_layer_dict(self, layer_dictionary):
         '''
         # Interprets a single-layer dictionary.
@@ -102,13 +109,6 @@ class Genome:
 
         # TODO: support Conv1D, LocallyConnected1D, LocallyConnected2D
         '''
-        # initializations
-        node_range = [16,32,64,128,256]
-        conv_filter_range = [16,32,64,128,256]
-        dropout_range = [0.1,0.25,0.5]
-        pool_or_kernel_range_2D = [(2,2),(3,3),(4,4)]
-        pool_or_kernel_range_1D = [2,3,4,6]
-        activation_funcs = ['relu']
         # dictionary for parameter pass
         keras_layer_parameters = {}
 
@@ -116,14 +116,14 @@ class Genome:
         if 'layer_name' in layer_dictionary.keys():
             layer_dictionary['layer_name'] = layer_dictionary['layer_name'].lower()
         else:
-            msg = "Each layer requires supported a 'layer_name'."
+            msg = "Each layer requires supported a `layer_name`."
             raise ValueError(msg)
         # check for parameter 'input_shape'
         if len(self.model.layers) == 0:
             if 'input_shape' in layer_dictionary.keys():
                 keras_layer_parameters['input_shape'] = layer_dictionary['input_shape']
             else:
-                msg = "First model layer requires parameter 'input_shape'."
+                msg = "First model layer requires parameter `input_shape`."
                 raise ValueError(msg)
 
         # Dense layer
@@ -131,41 +131,41 @@ class Genome:
             if 'units' in layer_dictionary.keys():
                 keras_layer_parameters['units'] = layer_dictionary['units']
             else:
-                keras_layer_parameters['units'] = random.choice(node_range)
+                keras_layer_parameters['units'] = random.choice(self.node_range)
             if 'activation' in layer_dictionary.keys():
                 keras_layer_parameters['activation'] = layer_dictionary['activation']
             else:
-                keras_layer_parameters['activation'] = random.choice(activation_funcs)
+                keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
         # Dropout
         if layer_dictionary['layer_name'] == 'dropout':
             if 'rate' in layer_dictionary.keys():
                 keras_layer_parameters['rate'] = layer_dictionary['rate']
             else:
-                keras_layer_parameters['rate'] = random.choice(dropout_range)
+                keras_layer_parameters['rate'] = random.choice(self.dropout_range)
         # Conv2D
         if layer_dictionary['layer_name'] == 'conv2d':
             if 'filters' in layer_dictionary.keys():
                 keras_layer_parameters['filters'] = layer_dictionary['filters']
             else:
-                keras_layer_parameters['filters'] = random.choice(conv_filter_range)
+                keras_layer_parameters['filters'] = random.choice(self.conv_filter_range)
             if 'kernel_size' in layer_dictionary.keys():
                 keras_layer_parameters['kernel_size'] = layer_dictionary['kernel_size']
             else:
-                keras_layer_parameters['kernel_size'] = random.choice(pool_or_kernel_range_2D)
+                keras_layer_parameters['kernel_size'] = random.choice(self.pool_or_kernel_range_2D)
             if 'activation' in layer_dictionary.keys():
                 keras_layer_parameters['activation'] = layer_dictionary['activation']
             else:
-                keras_layer_parameters['activation'] = random.choice(activation_funcs)
+                keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
             conv_filter_range
         # MaxPooling2D
         if layer_dictionary['layer_name'] == 'maxpooling2d':
             if 'pool_size' in layer_dictionary.keys():
                 keras_layer_parameters['pool_size'] = layer_dictionary['pool_size']
             else:
-                keras_layer_parameters['pool_size'] = random.choice(kernel_or_pool_size_2d)
+                keras_layer_parameters['pool_size'] = random.choice(self.kernel_or_pool_size_2d)
         # Layer invalid
         else:
-            msg = 'Could not find "%s" in supported layers. \n\tError occurred at: %s' % \
+            msg = 'Could not find `%s` in supported layers. \n\tError occurred at: %s' % \
                 (layer_dictionary['layer_name'], datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
             raise ValueError(msg)
 
