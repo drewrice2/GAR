@@ -1,11 +1,11 @@
 import random
 import numpy as np
+from datetime import datetime
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Conv1D, MaxPooling1D
 from keras.layers import LocallyConnected1D, LocallyConnected2D
-from datetime import datetime
 
 # --------------------------------------------------
 # -                                                -
@@ -15,6 +15,7 @@ from datetime import datetime
 # --------------------------------------------------
 
 # TODO: support more stuff
+# TODO: support `self.model.compile`, `self.model.fit`
 
 class Genome:
 
@@ -80,16 +81,31 @@ class Genome:
     # while True:
     #   model.add
 
-    def build
+    def build(self):
+        '''
+        # Runs all network randomization and building.
+        '''
+        pass
 
     def randomize_layers():
         '''
         # Randomize layers until `self.max_depth` is reached.
         '''
-        # if dimensionality == 2: generate num_conv_layers randomly
         # if 'conv2d' in self.available_layers: do conv block
-        while len(self.model.layers) < self.max_depth:
-            pass
+        if self.dimensionality == 2:
+            # randomize number of convolutional layers
+            num_conv_layers = self.max_depth * int(np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
+            # add convolutional layers to model
+            for _ in range(num_conv_layers):
+                layer = self.interpret_layer_dict({'layer_name':'conv2d'})
+                add_layer_dict_to_model(layer)
+                # random max pooling
+                chance_of_max_pooling = int(np.random.uniform())
+                if chance_of_max_pooling < 0.2:
+                    max_pooling_layer = self.interpret_layer_dict({'layer_name':'maxpooling2d'})
+                    add_layer_dict_to_model(max_pooling_layer)
+
+
         pass
 
     def add_from_list(self, list_of_layers):
@@ -105,8 +121,8 @@ class Genome:
                 msg = "Parameter `input_layer` must be of type <class 'dict'>. Found %s" % (type(input_layer))
                 raise TypeError(msg)
             else:
-                layer_dictionary = interpret_layer_dict(input_layer)
-                add_layer_dict_to_model(layer_dictionary)
+                layer = interpret_layer_dict(input_layer)
+                add_layer_dict_to_model(layer)
 
     def add_layer_dict_to_model(self, layer_dictionary):
         '''
