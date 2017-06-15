@@ -1,5 +1,5 @@
 # GAR
-### Hey! You just found GAR. GAR stands for Genomic Architecture Randomization.
+### Hey! You just found GAR... GAR stands for Genomic Architecture Randomization.
 ---
 ### The big idea.
 
@@ -7,7 +7,7 @@ Getting the best deep neural net architecture for any problem is not easy. But, 
 
 By abstracting layers to the following format: ```{'layer_name': {'parameter_name': parameter}}```, GAR allows for a Genome seed to be as customized or as randomized as a user specifies. The built-in "logging" functionality stores a GAR Genome, or generated architecture, along with the performance on the train and test data in a CSV, `results.csv`. If a performance would like to be recreated, the architecture list from a particular row can be dropped directly back into `GAR.add_from_list()` for recreation, or as a parameter to GAR if the user wants further randomization.
 
-Each Keras layer object has a number of parameters to set. GAR randomizes the parameters that you don't specify. For each layer, there exists a universe of randomization possibilities, and these are available as GAR object attributes. For example, `units_range = [16,32,64,128,256]`, is all of the possible `units` sizes for a `keras.layers.Dense` layer. Adjusting the universe of possibilities is as simple as `Genome.units_range = [256, 512, 1024]`.
+Each Keras layer object has a number of parameters to set. GAR randomizes the parameters that you don't specify. For each layer, there exists a universe of randomization possibilities, and these are available as GAR Genome object attributes. For example, `units_range = [16,32,64,128,256]`, is all of the possible `units` sizes for a `keras.layers.Dense` layer. Adjusting the universe of possibilities is as simple as `Genome.units_range = [256, 512, 1024]`.
 
 **But wait... The time to exhaust all possible layer creation combinations grows exponentially with number of layers! Why should I use GAR?**
 While this is true, GAR's randomization is supposed to be a research starting point. Randomly generating a few points within the superspace of parameters is better than a researcher manually constructing net architectures. By using GAR to identify a few candidate builds, a researcher can re-randomize given the new seeds or manually create architectures using the candidates as points of reference.
