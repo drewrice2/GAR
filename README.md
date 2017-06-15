@@ -1,6 +1,6 @@
 # GAR
 ## Hey! You just found GAR. GAR stands for Genomic Architecture Randomization.
----
+
 ### The big idea.
 
 Getting the best deep neural net architecture for any problem is not easy. But, with GPUs greatly accelerating the training of nets, random net architecture generation can assist researchers in quickly figuring out some basics about the problem at hand. The main unit of GAR is a Genome. A Genome is a single randomly generated architecture for given parameters.
