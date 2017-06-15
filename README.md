@@ -28,9 +28,11 @@ Look to the `test_genomes.py` script to check out GAR in action. A GAR Genome is
 ~ 1. Define GAR Genome input parameters:
 
 ```python
-net_must_start_with = [{'conv2d': {'filters':32, 'kernel_size': (3,3), 'activation': 'relu', 'input_shape': input_shape}}]
+net_must_start_with = [{'conv2d': {'filters':32, 'kernel_size': (3,3),
+            'activation': 'relu', 'input_shape': input_shape}}]
 
-net_must_end_with = [{'dense':{'units':128}}, {'dropout':{}}, {'dense':{'units': num_classes, 'activation': 'softmax'}}]
+net_must_end_with = [{'dense':{'units':128}}, {'dropout':{}},
+            {'dense':{'units': num_classes, 'activation': 'softmax'}}]
 
 max_depth = 7
 
@@ -40,21 +42,22 @@ min_depth = 4
 ~ 2. Instantiate a GAR Genome with the desired parameters:
 
 ```python
-genome = Genome(net_must_start_with = net_must_start_with, net_must_end_with = net_must_end_with, max_depth = max_depth, min_depth = min_depth)
+genome = Genome(net_must_start_with = net_must_start_with,
+            net_must_end_with = net_must_end_with,
+            max_depth = max_depth, min_depth = min_depth)
 ```
 ~ 3. Call `genome.build()`. Manually compile model and store the architecture. (In the future, GAR's scope will cover these operations.)
 ```python
 model, architecture = genome.build()
 # compiling the model is manual at the moment
 model.compile(loss=keras.losses.categorical_crossentropy,
-          optimizer=keras.optimizers.Adadelta(),
-          metrics=['accuracy'])
+            optimizer=keras.optimizers.Adadelta(),
+            metrics=['accuracy'])
 model.fit(x_train, y_train,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=1,
-          validation_data=(x_test, y_test))
-
+            batch_size=batch_size,
+            epochs=epochs,
+            verbose=1,
+            validation_data=(x_test, y_test))
 ```
 ~ 4. Aggregate accuracy metrics and dump to `results.csv`.
 
