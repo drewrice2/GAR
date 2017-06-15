@@ -1,5 +1,5 @@
 # GAR
-### Hey! You just found Genomic Architecture Randomization (GAR).
+## Hey! You just found Genomic Architecture Randomization (GAR).
 
 ---
 ### The big idea.
