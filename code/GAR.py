@@ -43,11 +43,11 @@ class Genome:
         self.model = Sequential() # only supporting Sequential models initially
         self.architecture = []
         # randomization universe
-        self.node_range = [16,32,64,128,256]
+        self.units_range = [16,32,64,128,256]
         self.conv_filter_range = [16,32,64,128,256]
-        self.dropout_range = [0.1,0.25,0.5]
-        self.pool_or_kernel_range_2D = [(2,2),(3,3),(4,4)]
-        self.pool_or_kernel_range_1D = [2,3,4,6]
+        self.dropout_range = [0.05,0.1,0.25,0.35]
+        self.pool_or_kernel_range_2D = [(2,2),(3,3),(5,5)]
+        self.pool_or_kernel_range_1D = [2,3,5]
         self.activation_funcs = ['relu']
 
         def typecheck_and_error_handle():
@@ -209,7 +209,7 @@ class Genome:
             if 'units' in parameters.keys():
                 keras_layer_parameters['units'] = parameters['units']
             else:
-                keras_layer_parameters['units'] = random.choice(self.node_range)
+                keras_layer_parameters['units'] = random.choice(self.units_range)
             if 'activation' in parameters.keys():
                 keras_layer_parameters['activation'] = parameters['activation']
             else:
