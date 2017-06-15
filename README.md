@@ -64,4 +64,4 @@ model.fit(x_train, y_train,
 ```
 ~ 4. Aggregate accuracy metrics and dump to `results.csv`.
 
-NOTE: some nets will be bigger than `max_input`, depending on input parameters and randomization.
+NOTE: some nets will be bigger than `max_depth`, depending on input parameters and randomization.
