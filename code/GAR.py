@@ -158,6 +158,8 @@ class Genome:
         for key, value in layer_dictionary.items():
             layer = key
             parameters = value
+
+        # Dense
         if layer == 'dense':
             self.model.add(Dense(**parameters))
         # Dropout
@@ -176,6 +178,7 @@ class Genome:
         else:
             msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
             raise ValueError(msg)
+            
         # add layer specifications to `self.architecture` list
         self.architecture.append(layer_dictionary)
 
