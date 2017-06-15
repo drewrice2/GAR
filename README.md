@@ -1,13 +1,11 @@
 # GAR
-
+## Hey! You just found GAR. GAR stands for Genomic Architecture Randomization.
 ---
 ### The big idea.
 
-Hey! You just found GAR. GAR stands for Genomic Architecture Randomization.
+Getting the best deep neural net architecture for any problem is not easy. But, with GPUs greatly accelerating the training of nets, random net architecture generation can assist researchers in quickly figuring out some basics about the problem at hand. The main unit of GAR is a Genome. A Genome is a single randomly generated architecture for given parameters.
 
-Getting the best deep neural net architecture for any problem is not easy. But, with GPUs greatly accelerating the training of nets, random net architecture generation can assist researchers in quickly figuring out some basics about the problem at hand.
-
-By abstracting layers to the following format: ```{'layer_name': {'parameter_name': parameter}}```, GAR allows for a genome seed to be as customized or as randomized as a user specifies. The built-in "logging" functionality stores a GAR Genome, or generated architecture, along with the performance on the train and test data in a CSV, `results.csv`. If a performance would like to be recreated, the architecture list from a particular row can be dropped directly back into `GAR.add_from_list()` for recreation, or as a parameter to GAR if the user wants further randomization.
+By abstracting layers to the following format: ```{'layer_name': {'parameter_name': parameter}}```, GAR allows for a Genome seed to be as customized or as randomized as a user specifies. The built-in "logging" functionality stores a GAR Genome, or generated architecture, along with the performance on the train and test data in a CSV, `results.csv`. If a performance would like to be recreated, the architecture list from a particular row can be dropped directly back into `GAR.add_from_list()` for recreation, or as a parameter to GAR if the user wants further randomization.
 
 Each Keras layer object has a number of parameters to set. GAR randomizes the parameters that you don't specify. For each layer, there exists a universe of randomization possibilities, and these are available as GAR object attributes. For example, `units_range = [16,32,64,128,256]`, is all of the possible `units` sizes for a `keras.layers.Dense` layer. Adjusting the universe of possibilities is as simple as `Genome.units_range = [256, 512, 1024]`.
 
