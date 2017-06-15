@@ -58,7 +58,7 @@ for iteration_num in range(NUM_MODELS):
     net_must_end_with = [{'dense':{'units':128}}, {'dropout':{}}, {'dense':{'units':num_classes, \
         'activation':'softmax'}}]
     # Here's GAR!
-    genome = Genome(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with)
+    genome = Genome(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with, max_depth=5, min_depth=2)
     model, architecture = genome.build()
     # compiling the model is manual at the moment
     model.compile(loss=keras.losses.categorical_crossentropy,

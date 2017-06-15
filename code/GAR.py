@@ -112,10 +112,6 @@ class Genome:
                     dropout_layer = self.interpret_layer_dict({'dropout':{}})
                     self.add_layer_dict_to_model(dropout_layer)
 
-            # checks
-            print(self.net_depth, self.max_depth, self.min_depth)
-            print(num_conv_layers, num_fully_connected)
-
     def add_from_list(self, list_of_layers):
         '''
         # Input: list_of_layers to run through `self.interpret_layer_dict`.
