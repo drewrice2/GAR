@@ -18,8 +18,12 @@ from datetime import datetime
 
 class Genome:
 
-    def __init__(self, net_must_start_with=[], net_must_end_with=[], dimensionality=2,
-        min_depth=2, max_depth=7): # input params
+    def __init__(self, net_must_start_with, net_must_end_with, min_depth=2,
+            max_depth=7, dimensionality=2):
+        '''
+        # Accepts relevant variables, type checks.
+        '''
+        #
         self.net_must_start_with = net_must_start_with
         self.net_must_end_with = net_must_end_with
         self.dimensionality = dimensionality
@@ -27,7 +31,7 @@ class Genome:
         self.max_depth = max_depth
         self.model = Sequential() # only supporting Sequential models initially
         self.architecture = []
-        # network variable initializations
+        # adjustable possibilities
         self.node_range = [16,32,64,128,256]
         self.conv_filter_range = [16,32,64,128,256]
         self.dropout_range = [0.1,0.25,0.5]
@@ -76,6 +80,8 @@ class Genome:
     # while True:
     #   model.add
 
+    def build
+
     def randomize_layers():
         '''
         # Randomize layers until `self.max_depth` is reached.
@@ -86,26 +92,54 @@ class Genome:
             pass
         pass
 
-    def add_layer_dict_to_model():
-        '''
-        # Receives a one-layer dictionary. Interprets and adds to self.model.
-            Writes to `self.architecture` list.
-        '''
-        pass
-
     def add_from_list(self, list_of_layers):
         '''
         # Input: list_of_layers to run through `self.interpret_layer_dict`.
             Called on `self.net_must_start_with`, `self.net_must_end_with`.
-        '''
-        for layer_dictionary in list_of_layers:
-            pass
 
-    def clear_memory():
+        # Raises: TypeError
+                    if layer parameters is not a dictionary.
         '''
-        # Delete any large variables from memory. TBD on what they are.
+        for input_layer in list_of_layers:
+            if type(input_layer) != dict:
+                msg = "Parameter `input_layer` must be of type <class 'dict'>. Found %s" % (type(input_layer))
+                raise TypeError(msg)
+            else:
+                layer_dictionary = interpret_layer_dict(input_layer)
+                add_layer_dict_to_model(layer_dictionary)
+
+    def add_layer_dict_to_model(self, layer_dictionary):
         '''
-        pass
+        # Receives a one-layer dictionary. Interprets and adds to `self.model`.
+
+        # Input: `layer_dictionary` is a one-layer dictionary {`layer_name`:`params`}.
+            Appends `layer_dictionary` to `self.architecture` list.
+
+        # Raises: ValueError
+                    if layer is not supported.
+        '''
+        layer = ''
+        parameters = {}
+        for key, value in layer_dictionary.items():
+            layer = key
+            parameters = value
+        if layer == 'dense':
+            self.model.add(Dense(**parameters))
+        # Dropout
+        elif layer == 'dropout':
+            self.model.add(Dropout(**parameters))
+        # Conv2D
+        elif layer == 'conv2d':
+            self.model.add(Conv2D(**parameters))
+        # MaxPooling2D
+        elif layer == 'maxpooling2d':
+            self.model.add(MaxPooling2D(**parameters))
+        # Layer invalid
+        else:
+            msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
+            raise ValueError(msg)
+        # add layer specifications to `self.architecture` list
+        self.architecture.append(layer_dictionary)
 
     def interpret_layer_dict(self, layer_dictionary):
         '''
@@ -144,13 +178,13 @@ class Genome:
             else:
                 keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
         # Dropout
-        if layer_dictionary['layer_name'] == 'dropout':
+        elif layer_dictionary['layer_name'] == 'dropout':
             if 'rate' in layer_dictionary.keys():
                 keras_layer_parameters['rate'] = layer_dictionary['rate']
             else:
                 keras_layer_parameters['rate'] = random.choice(self.dropout_range)
         # Conv2D
-        if layer_dictionary['layer_name'] == 'conv2d':
+        elif layer_dictionary['layer_name'] == 'conv2d':
             if 'filters' in layer_dictionary.keys():
                 keras_layer_parameters['filters'] = layer_dictionary['filters']
             else:
@@ -165,18 +199,23 @@ class Genome:
                 keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
             conv_filter_range
         # MaxPooling2D
-        if layer_dictionary['layer_name'] == 'maxpooling2d':
+        elif layer_dictionary['layer_name'] == 'maxpooling2d':
             if 'pool_size' in layer_dictionary.keys():
                 keras_layer_parameters['pool_size'] = layer_dictionary['pool_size']
             else:
                 keras_layer_parameters['pool_size'] = random.choice(self.kernel_or_pool_size_2d)
         # Layer invalid
         else:
-            msg = 'Could not find `%s` in supported layers. \n\tError occurred at: %s' % \
-                (layer_dictionary['layer_name'], datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC'))
+            msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
             raise ValueError(msg)
 
         return {layer_dictionary['layer_name']:keras_layer_parameters}
+
+    def clear_memory():
+        '''
+        # Delete any large variables from memory. TBD on what they are.
+        '''
+        pass
 
 if __name__ == '__main__':
     x = Genome('b','b',dimensionality=2, min_depth=4,max_depth=4)
