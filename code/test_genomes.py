@@ -4,7 +4,7 @@ from keras.layers import Dense, Dropout, Flatten, Conv2D
 from keras.datasets import mnist
 from keras import backend as K
 import tensorflow as tf
-from GAR import generate_genome
+from GAR import Genome
 import datetime
 import pandas as pd
 
@@ -51,25 +51,22 @@ for iteration_num in range(NUM_MODELS):
     print('# - Beginning model # ' + str(iteration_num+1))
     print('#')
     print('# ---------------------------------------------------------------------------')
-    # begin by instantiating your model and adding the input layer
-    model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),
-                     activation='relu',
-                     input_shape=input_shape))
-    # Here's GAR!
-    # NOTE: only the architecture list is returned for writing to results.csv
-    architecture = generate_genome(model, dimensionality=2, min_depth=2, max_depth=4,
-        net_must_end_with=['dense','flatten'])
 
-    # adding some final layers and compiling the model
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.1))
-    model.add(Dense(num_classes, activation='softmax'))
+    # define relevant GAR variables
+    net_must_start_with = [{'conv2d':{'filters':32, 'kernel_size':(3,3), 'activation':'relu',\
+        'input_shape':input_shape}}]
+    net_must_end_with = [{'dense':{'units':128}}, {'dropout':{}}, {'dense':{'units':num_classes, \
+        'activation':'softmax'}}]
+    # Here's GAR!
+    genome = Genome(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with)
+    model, architecture = genome.build()
+    # compiling the model is manual at the moment
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
     print('# ---------------------------------------------------------------------------')
-    print('# - Model # ' + str(iteration_num+1) + ' architecture = ' + str(architecture))
+    print('# - Model # ' + str(iteration_num+1) + '; model size = ' + str(len(model.layers)))
+    print('# ' + str(architecture))
     print('# ---------------------------------------------------------------------------')
     model.fit(x_train, y_train,
               batch_size=batch_size,
@@ -83,10 +80,6 @@ for iteration_num in range(NUM_MODELS):
     to_csv_df = pd.DataFrame({'test_loss':score[0], 'test_accuracy':score[1],\
         'architecture':[architecture],'timestamp':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}, index=[0])
     pd.concat([to_csv_df,results], axis=0).to_csv('results.csv', index=False)
-    print('# ---------------------------------------------------------------------------')
-    print('# - Model # ' + str(iteration_num+1) + ' written to CSV')
-    print('# ---------------------------------------------------------------------------')
-    print('\n')
     # delete local objects, clear graph
     K.clear_session()
     # similar issue: https://github.com/fchollet/keras/issues/2397

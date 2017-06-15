@@ -19,28 +19,26 @@ from keras.layers import LocallyConnected1D, LocallyConnected2D
 
 class Genome:
 
-    def __init__(self, net_must_start_with, net_must_end_with, min_depth=2,
+    def __init__(self, net_must_start_with, net_must_end_with, min_depth=4,
             max_depth=7, dimensionality=2):
         '''
         # Accepts relevant variables, type checks.
         '''
-        #
         self.net_must_start_with = net_must_start_with
         self.net_must_end_with = net_must_end_with
         self.dimensionality = dimensionality
         self.min_depth = min_depth
         self.max_depth = max_depth
+        self.net_depth = random.randint(min_depth, max_depth)
         self.model = Sequential() # only supporting Sequential models initially
         self.architecture = []
-        # adjustable possibilities
+        # possibile criteria for randomization
         self.node_range = [16,32,64,128,256]
         self.conv_filter_range = [16,32,64,128,256]
         self.dropout_range = [0.1,0.25,0.5]
         self.pool_or_kernel_range_2D = [(2,2),(3,3),(4,4)]
         self.pool_or_kernel_range_1D = [2,3,4,6]
         self.activation_funcs = ['relu']
-
-        # TODO: allow users to adjust available_layers parameter
 
         def typecheck_and_error_handle():
             # !
@@ -72,41 +70,51 @@ class Genome:
         # run typechecking
         typecheck_and_error_handle()
 
-
-    # ~ OUTLINE ~
-    # based on 'layer' parameter, check for relevant variables (first requires 'input_layer')
-    # for what's left off, randomization
-    #       if 'key' in dict.keys(): blah
-    # dictionary
-    # while True:
-    #   model.add
-
     def build(self):
         '''
         # Runs all network randomization and building.
         '''
-        pass
+        self.add_from_list(self.net_must_start_with)
+        self.randomize_layers()
+        self.add_from_list(self.net_must_end_with)
+        return self.model, self.architecture
 
-    def randomize_layers():
+    def randomize_layers(self):
         '''
         # Randomize layers until `self.max_depth` is reached.
         '''
-        # if 'conv2d' in self.available_layers: do conv block
+        # only supporting 2D nets at the moment, but ¯\_(ツ)_/¯
         if self.dimensionality == 2:
             # randomize number of convolutional layers
-            num_conv_layers = self.max_depth * int(np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
+            num_conv_layers = int(self.net_depth * np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
             # add convolutional layers to model
             for _ in range(num_conv_layers):
-                layer = self.interpret_layer_dict({'layer_name':'conv2d'})
-                add_layer_dict_to_model(layer)
+                layer = self.interpret_layer_dict({'conv2d':{}})
+                self.add_layer_dict_to_model(layer)
                 # random max pooling
-                chance_of_max_pooling = int(np.random.uniform())
+                chance_of_max_pooling = np.random.uniform()
                 if chance_of_max_pooling < 0.2:
-                    max_pooling_layer = self.interpret_layer_dict({'layer_name':'maxpooling2d'})
-                    add_layer_dict_to_model(max_pooling_layer)
+                    max_pooling_layer = self.interpret_layer_dict({'maxpooling2d':{}})
+                    self.add_layer_dict_to_model(max_pooling_layer)
 
+            # add flatten layer
+            layer = self.interpret_layer_dict({'flatten':{}})
+            self.add_layer_dict_to_model(layer)
 
-        pass
+            # add dense layers
+            num_fully_connected = self.net_depth - num_conv_layers
+            for _ in range(num_fully_connected):
+                layer = self.interpret_layer_dict({'dense':{}})
+                self.add_layer_dict_to_model(layer)
+                # random dropout
+                chance_of_dropout = np.random.uniform()
+                if chance_of_dropout < 0.2:
+                    dropout_layer = self.interpret_layer_dict({'dropout':{}})
+                    self.add_layer_dict_to_model(dropout_layer)
+
+            # checks
+            print(self.net_depth, self.max_depth, self.min_depth)
+            print(num_conv_layers, num_fully_connected)
 
     def add_from_list(self, list_of_layers):
         '''
@@ -121,8 +129,8 @@ class Genome:
                 msg = "Parameter `input_layer` must be of type <class 'dict'>. Found %s" % (type(input_layer))
                 raise TypeError(msg)
             else:
-                layer = interpret_layer_dict(input_layer)
-                add_layer_dict_to_model(layer)
+                layer = self.interpret_layer_dict(input_layer)
+                self.add_layer_dict_to_model(layer)
 
     def add_layer_dict_to_model(self, layer_dictionary):
         '''
@@ -150,6 +158,9 @@ class Genome:
         # MaxPooling2D
         elif layer == 'maxpooling2d':
             self.model.add(MaxPooling2D(**parameters))
+        # Flatten
+        elif layer == 'flatten':
+            self.model.add(Flatten())
         # Layer invalid
         else:
             msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
@@ -169,63 +180,63 @@ class Genome:
         # dictionary for parameter pass
         keras_layer_parameters = {}
 
-        # fundamental parameter checking
-        if 'layer_name' in layer_dictionary.keys():
-            layer_dictionary['layer_name'] = layer_dictionary['layer_name'].lower()
-        else:
-            msg = "Each layer requires supported a `layer_name`."
-            raise ValueError(msg)
+        for k, v in layer_dictionary.items():
+            layer_name = k
+            parameters = v
+
         # check for parameter 'input_shape'
         if len(self.model.layers) == 0:
-            if 'input_shape' in layer_dictionary.keys():
-                keras_layer_parameters['input_shape'] = layer_dictionary['input_shape']
+            if 'input_shape' in parameters.keys():
+                keras_layer_parameters['input_shape'] = parameters['input_shape']
             else:
                 msg = "First model layer requires parameter `input_shape`."
                 raise ValueError(msg)
 
         # Dense layer
-        if layer_dictionary['layer_name'] == 'dense':
-            if 'units' in layer_dictionary.keys():
-                keras_layer_parameters['units'] = layer_dictionary['units']
+        if layer_name == 'dense':
+            if 'units' in parameters.keys():
+                keras_layer_parameters['units'] = parameters['units']
             else:
                 keras_layer_parameters['units'] = random.choice(self.node_range)
-            if 'activation' in layer_dictionary.keys():
-                keras_layer_parameters['activation'] = layer_dictionary['activation']
+            if 'activation' in parameters.keys():
+                keras_layer_parameters['activation'] = parameters['activation']
             else:
                 keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
         # Dropout
-        elif layer_dictionary['layer_name'] == 'dropout':
-            if 'rate' in layer_dictionary.keys():
-                keras_layer_parameters['rate'] = layer_dictionary['rate']
+        elif layer_name == 'dropout':
+            if 'rate' in parameters.keys():
+                keras_layer_parameters['rate'] = parameters['rate']
             else:
                 keras_layer_parameters['rate'] = random.choice(self.dropout_range)
         # Conv2D
-        elif layer_dictionary['layer_name'] == 'conv2d':
-            if 'filters' in layer_dictionary.keys():
-                keras_layer_parameters['filters'] = layer_dictionary['filters']
+        elif layer_name == 'conv2d':
+            if 'filters' in parameters.keys():
+                keras_layer_parameters['filters'] = parameters['filters']
             else:
                 keras_layer_parameters['filters'] = random.choice(self.conv_filter_range)
-            if 'kernel_size' in layer_dictionary.keys():
-                keras_layer_parameters['kernel_size'] = layer_dictionary['kernel_size']
+            if 'kernel_size' in parameters.keys():
+                keras_layer_parameters['kernel_size'] = parameters['kernel_size']
             else:
                 keras_layer_parameters['kernel_size'] = random.choice(self.pool_or_kernel_range_2D)
-            if 'activation' in layer_dictionary.keys():
-                keras_layer_parameters['activation'] = layer_dictionary['activation']
+            if 'activation' in parameters.keys():
+                keras_layer_parameters['activation'] = parameters['activation']
             else:
                 keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
-            conv_filter_range
         # MaxPooling2D
-        elif layer_dictionary['layer_name'] == 'maxpooling2d':
-            if 'pool_size' in layer_dictionary.keys():
-                keras_layer_parameters['pool_size'] = layer_dictionary['pool_size']
+        elif layer_name == 'maxpooling2d':
+            if 'pool_size' in parameters.keys():
+                keras_layer_parameters['pool_size'] = parameters['pool_size']
             else:
-                keras_layer_parameters['pool_size'] = random.choice(self.kernel_or_pool_size_2d)
+                keras_layer_parameters['pool_size'] = random.choice(self.pool_or_kernel_range_2D)
+        # Flatten
+        elif layer_name == 'flatten':
+            pass
         # Layer invalid
         else:
-            msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
+            msg = 'Could not find `%s` in supported layers.' % (layer_name)
             raise ValueError(msg)
 
-        return {layer_dictionary['layer_name']:keras_layer_parameters}
+        return {layer_name:keras_layer_parameters}
 
     def clear_memory():
         '''

@@ -22,3 +22,5 @@ At this point, I have only tested GAR with:
 1. Create input layer(s).
 2. Pass the `model` object to GAR, to generate _N_ models from the base model.
 3. Aggregate accuracy metrics and dump to `results.csv`.
+
+NOTE: some nets will be bigger than `max_input`, depending on input parameters and randomization.
