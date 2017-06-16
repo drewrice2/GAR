@@ -17,7 +17,7 @@ from keras.layers import LocallyConnected1D, LocallyConnected2D
 # TODO: support more stuff
 # TODO: support `self.model.compile`, `self.model.fit`
 
-class Genome:
+class Gene:
 
     def __init__(self, net_must_start_with, net_must_end_with, min_depth=4,
             max_depth=7, dimensionality=2):

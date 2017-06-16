@@ -52,6 +52,7 @@ for iteration_num in range(NUM_MODELS):
     print('#')
     print('# ---------------------------------------------------------------------------')
 
+
     # define relevant GAR variables
     net_must_start_with = [{'conv2d':{'filters':32, 'kernel_size':(3,3), 'activation':'relu',\
         'input_shape':input_shape}}]
@@ -59,9 +60,12 @@ for iteration_num in range(NUM_MODELS):
         'activation':'softmax'}}]
     max_depth = 7
     min_depth = 4
+    
     # Here's GAR!
-    genome = Genome(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with, max_depth=max_depth, min_depth=min_depth)
-    model, architecture = genome.build()
+    gene = Gene(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with, max_depth=max_depth, min_depth=min_depth)
+    model, architecture = gene.build()
+
+
     # compiling the model is manual at the moment
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.Adadelta(),
