@@ -153,11 +153,10 @@ class Gene:
         # Raises
             ValueError: if layer is not supported.
         '''
-        layer = ''
-        parameters = {}
-        for key, value in layer_dictionary.items():
-            layer = key
-            parameters = value
+        # interpret layer and parameter dictionary
+        for k, v in layer_dictionary.items():
+            layer = k
+            parameters = v
 
         # Dense
         if layer == 'dense':
@@ -195,6 +194,7 @@ class Gene:
         # dictionary for parameter pass
         keras_layer_parameters = {}
 
+        # interpret layer and parameter dictionary
         for k, v in layer_dictionary.items():
             layer_name = k
             parameters = v
