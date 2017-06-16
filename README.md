@@ -10,7 +10,7 @@ By abstracting layers to the following format: ```{'layer_name': {'parameter_nam
 Each Keras layer object has a number of parameters to set. GAR randomizes the parameters that you don't specify. For each layer, there exists a universe of randomization possibilities, and these are available as GAR Gene object attributes. For example, `units_range = [16,32,64,128,256]`, is all of the possible `units` sizes for a `keras.layers.Dense` layer. Adjusting the universe of possibilities is as simple as `Gene.units_range = [256, 512, 1024]`.
 
 **But wait... The time to exhaust all possible layer creation combinations grows exponentially with number of layers! Why should I use GAR?**
-While this is true, GAR's randomization is supposed to be a research starting point. Randomly generating a few points within the superspace of parameters is better than a researcher manually constructing net architectures. By using GAR to identify a few candidate builds, a researcher can re-randomize given the new seeds or manually create architectures using the candidates as points of reference.
+While this is true, GAR's randomization is supposed to be a research starting point. Randomly generating a few points within the superspace of parameters can be more insightful than a researcher manually constructing net architectures. By using GAR to identify a few candidate builds, a researcher can re-randomize given the new seeds or manually create architectures using the candidates as points of reference.
 
 ### The next steps.
 
