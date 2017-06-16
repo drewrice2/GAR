@@ -178,7 +178,7 @@ class Genome:
         else:
             msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
             raise ValueError(msg)
-            
+
         # add layer specifications to `self.architecture` list
         self.architecture.append(layer_dictionary)
 
@@ -207,7 +207,7 @@ class Genome:
                 msg = "First model layer requires parameter `input_shape`."
                 raise ValueError(msg)
 
-        # Dense layer
+        # Dense
         if layer_name == 'dense':
             if 'units' in parameters.keys():
                 keras_layer_parameters['units'] = parameters['units']

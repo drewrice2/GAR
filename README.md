@@ -41,20 +41,22 @@ max_depth = 7
 min_depth = 4
 ```
 
-~ 2. Instantiate a GAR Genome with the desired parameters:
+~ 2. Instantiate a GAR Genome with the desired parameters. Then call `genome.build()` to create a random architecture.
 
 ```python
 genome = Genome(net_must_start_with = net_must_start_with,
             net_must_end_with = net_must_end_with,
             max_depth = max_depth, min_depth = min_depth)
-```
-~ 3. Call `genome.build()`. Manually compile model and store the architecture. (In the future, GAR's scope will cover these operations.)
-```python
+
 model, architecture = genome.build()
+```
+~ 3. Manually compile model and store the architecture. (In the future, GAR's scope will cover these operations.)
+```python
 # compiling the model is manual at the moment
 model.compile(loss=keras.losses.categorical_crossentropy,
             optimizer=keras.optimizers.Adadelta(),
             metrics=['accuracy'])
+            
 model.fit(x_train, y_train,
             batch_size=batch_size,
             epochs=epochs,
