@@ -82,4 +82,4 @@ Existing requirements:
 - datetime
 - pandas
 
-Run `pip install requirements.txt` to install the relevant packages.
+Run `pip install -r requirements.txt` to install the relevant packages.
