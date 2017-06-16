@@ -14,7 +14,7 @@ While this is true, GAR's randomization is supposed to be a research starting po
 
 ### The next steps.
 
-Genomic programming is supposed to mirror evolution, in that the best performing genes are selected and mutated. In the future, GAR should support functionality that resembles this idea. In some form or another, a meta-algorithm could be learning from and controlling each randomized Gene. A Genome is a set of Genes, or randomized architectures with similar criteria. A Genome would be an ideal place for a machine learning algorithm to learn which net architectures perform well and which do not. 
+Genomic programming is supposed to mirror evolution, in that the best performing genes are selected and mutated. In the future, GAR should support functionality that resembles this idea. In some form or another, a meta-algorithm could be learning from and controlling each randomized Gene. A Genome is a set of Genes, or randomized architectures with similar criteria. A Genome would be an ideal place for a machine learning algorithm to learn which net architectures perform well and which do not.
 
 ---
 ### GAR is built on top of [Keras](https://github.com/fchollet/keras).
@@ -70,3 +70,16 @@ model.fit(x_train, y_train,
 ~ 4. Aggregate accuracy metrics and dump to `results.csv`.
 
 NOTE: some nets will be bigger than `max_depth`, depending on input parameters and randomization.
+
+---
+### Dependencies.
+
+Existing requirements:
+
+- keras
+- random
+- numpy
+- datetime
+- pandas
+
+Run `pip install requirements.txt` to install the relevant packages.
