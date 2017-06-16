@@ -12,7 +12,9 @@ Each Keras layer object has a number of parameters to set. GAR randomizes the pa
 **But wait... The time to exhaust all possible layer creation combinations grows exponentially with number of layers! Why should I use GAR?**
 While this is true, GAR's randomization is supposed to be a research starting point. Randomly generating a few points within the superspace of parameters is better than a researcher manually constructing net architectures. By using GAR to identify a few candidate builds, a researcher can re-randomize given the new seeds or manually create architectures using the candidates as points of reference.
 
-Genomic programming is supposed to mirror evolution, in that the best performing genes are selected and mutated. In the future, GAR should support such functionality. Ideally, a meta-algorithm learning from and controlling each randomized Gene.
+### The next steps.
+
+Genomic programming is supposed to mirror evolution, in that the best performing genes are selected and mutated. In the future, GAR should support such functionality. Ideally, a meta-algorithm learning from and controlling each randomized Gene. The meta-structure will be called a Genome, and will be a set of randomized algorithms with the same criteria. A Genome would be an ideal place for a machine learning algorithm to learn which net architectures perform well and which do not. 
 
 ---
 ### GAR is built on top of [Keras](https://github.com/fchollet/keras).
