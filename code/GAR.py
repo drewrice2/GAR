@@ -50,7 +50,7 @@ class Gene:
         self.pool_or_kernel_range_1D = [2,3,5]
         self.activation_funcs = ['relu']
 
-        def typecheck_and_error_handle():
+        def _typecheck_and_error_handle():
             # !
             if self.dimensionality != 2:
                 msg = "Only supporting 2D convolutional nets at this time. Change parameter `dimensionality`."
@@ -78,7 +78,7 @@ class Gene:
                 msg = "Net size too bit for max_depth. Check parameters: `max_depth`, `net_must_start_with`, `net_must_end_with`."
                 raise ValueError(msg)
         # run typechecking
-        typecheck_and_error_handle()
+        _typecheck_and_error_handle()
 
     def build(self):
         '''Runs all network randomization and building.
@@ -93,9 +93,10 @@ class Gene:
         return self.model, self.architecture
 
     def randomize_layers(self):
-        '''Randomize layers until `self.net_depth` is reached. Only working for 2D convolutional nets
-            at the moment. Current workflow: randomized `num_conv_layers`, with randomized pooling, and
-            randomized `num_fully_connected`, with randomized dropout.
+        '''Randomize layers until `self.net_depth` is reached. Current workflow: randomized `num_conv_layers`,
+            with randomized pooling, and randomized `num_fully_connected`, with randomized dropout.
+
+            Only supporting 2D convolutional nets at the moment.
         '''
         # only supporting 2D nets at the moment, but ¯\_(ツ)_/¯
         if self.dimensionality == 2:
