@@ -15,9 +15,6 @@ from keras.layers import LocallyConnected1D, LocallyConnected2D
 # -                                                -
 # --------------------------------------------------
 
-# TODO: support more stuff
-# TODO: support `self.model.compile`, `self.model.fit`
-
 class Gene:
 
     def __init__(self, net_must_start_with, net_must_end_with, min_depth=4,
@@ -110,7 +107,7 @@ class Gene:
                 self.add_layer_dict_to_model(layer)
                 # random max pooling
                 chance_of_max_pooling = np.random.uniform()
-                if chance_of_max_pooling < 0.2:
+                if chance_of_max_pooling < 0.35:
                     max_pooling_layer = self.interpret_layer_dict({'maxpooling2d':{}})
                     self.add_layer_dict_to_model(max_pooling_layer)
 
