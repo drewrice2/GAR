@@ -4,7 +4,7 @@ from keras.layers import Dense, Dropout, Flatten, Conv2D
 from keras.datasets import mnist
 from keras import backend as K
 import tensorflow as tf
-from GAR import Genome
+from GAR import Gene
 import datetime
 import pandas as pd
 
@@ -60,7 +60,7 @@ for iteration_num in range(NUM_MODELS):
         'activation':'softmax'}}]
     max_depth = 7
     min_depth = 4
-    
+
     # Here's GAR!
     gene = Gene(net_must_start_with=net_must_start_with, net_must_end_with=net_must_end_with, max_depth=max_depth, min_depth=min_depth)
     model, architecture = gene.build()

@@ -1,6 +1,7 @@
 import random
 import numpy as np
 from datetime import datetime
+from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -34,6 +35,7 @@ class Gene:
             ValueError: if `dimensionality` != 2, or if `max_depth` < `min_depth`
             TypeError: if input vars are of incorrect type.
         '''
+        self.backend = K.backend()
         self.net_must_start_with = net_must_start_with
         self.net_must_end_with = net_must_end_with
         self.dimensionality = dimensionality
@@ -238,12 +240,20 @@ class Gene:
                 keras_layer_parameters['activation'] = parameters['activation']
             else:
                 keras_layer_parameters['activation'] = random.choice(self.activation_funcs)
+            if self.backend == 'tensorflow':
+                keras_layer_parameters['dim_ordering'] = 'tf'
+            elif self.backend == 'theano':
+                keras_layer_parameters['dim_ordering'] = 'th'
         # MaxPooling2D
         elif layer_name == 'maxpooling2d':
             if 'pool_size' in parameters.keys():
                 keras_layer_parameters['pool_size'] = parameters['pool_size']
             else:
                 keras_layer_parameters['pool_size'] = random.choice(self.pool_or_kernel_range_2D)
+            if self.backend == 'tensorflow':
+                keras_layer_parameters['dim_ordering'] = 'tf'
+            elif self.backend == 'theano':
+                keras_layer_parameters['dim_ordering'] = 'th'
         # Flatten
         elif layer_name == 'flatten':
             pass
