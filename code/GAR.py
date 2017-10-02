@@ -39,7 +39,7 @@ class Gene:
         self.min_depth = min_depth
         self.max_depth = max_depth
         self.net_depth = random.randint(min_depth, max_depth)
-        self.model = Sequential() # only supporting Sequential models initially
+        self.model = Sequential() # only supporting Sequential models
         self.architecture = []
         # randomization universe
         self.units_range = [16,32,64,128,256]
@@ -50,10 +50,6 @@ class Gene:
         self.activation_funcs = ['relu']
 
         def _typecheck_and_error_handle():
-            # !
-            if self.dimensionality != 2:
-                msg = "Only supporting 2D convolutional nets at this time. Change parameter `dimensionality`."
-                raise ValueError(msg)
             # initial type checking
             if type(self.dimensionality) != int:
                 msg = "Parameter `dimensionality` must be of type <class 'int'>. Found %s" % (type(self.dimensionality))
@@ -97,7 +93,6 @@ class Gene:
 
             Only supporting 2D convolutional nets at the moment.
         '''
-        # only supporting 2D nets at the moment, but ¯\_(ツ)_/¯
         if self.dimensionality == 2:
             # randomize number of convolutional layers
             num_conv_layers = int(self.net_depth * np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
