@@ -86,12 +86,12 @@ class Gene:
             model: an uncompiled Keras model object with GAR randomized layers
             architecture: list of dictionaries for calling GAR on, or for logging purposes
         '''
-        self.add_from_list(self.net_must_start_with)
-        self.randomize_layers()
-        self.add_from_list(self.net_must_end_with)
+        self._add_from_list(self.net_must_start_with)
+        self._randomize_layers()
+        self._add_from_list(self.net_must_end_with)
         return self.model, self.architecture
 
-    def randomize_layers(self):
+    def _randomize_layers(self):
         '''Randomize layers until `self.net_depth` is reached. Current workflow: randomized `num_conv_layers`,
             with randomized pooling, and randomized `num_fully_connected`, with randomized dropout.
 
@@ -103,34 +103,34 @@ class Gene:
             num_conv_layers = int(self.net_depth * np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
             # add convolutional layers to model
             for _ in range(num_conv_layers):
-                layer = self.interpret_layer_dict({'conv2d':{}})
-                self.add_layer_dict_to_model(layer)
+                layer = self._interpret_layer_dict({'conv2d':{}})
+                self._add_layer_dict_to_model(layer)
                 # random max pooling
                 chance_of_max_pooling = np.random.uniform()
                 if chance_of_max_pooling < 0.35:
-                    max_pooling_layer = self.interpret_layer_dict({'maxpooling2d':{}})
-                    self.add_layer_dict_to_model(max_pooling_layer)
+                    max_pooling_layer = self._interpret_layer_dict({'maxpooling2d':{}})
+                    self._add_layer_dict_to_model(max_pooling_layer)
 
             # add flatten layer
-            layer = self.interpret_layer_dict({'flatten':{}})
-            self.add_layer_dict_to_model(layer)
+            layer = self._interpret_layer_dict({'flatten':{}})
+            self._add_layer_dict_to_model(layer)
 
             # add dense layers
             num_fully_connected = self.net_depth - num_conv_layers
             for _ in range(num_fully_connected):
-                layer = self.interpret_layer_dict({'dense':{}})
-                self.add_layer_dict_to_model(layer)
+                layer = self._interpret_layer_dict({'dense':{}})
+                self._add_layer_dict_to_model(layer)
                 # random dropout
                 chance_of_dropout = np.random.uniform()
                 if chance_of_dropout < 0.2:
-                    dropout_layer = self.interpret_layer_dict({'dropout':{}})
-                    self.add_layer_dict_to_model(dropout_layer)
+                    dropout_layer = self._interpret_layer_dict({'dropout':{}})
+                    self._add_layer_dict_to_model(dropout_layer)
 
-    def add_from_list(self, list_of_layers):
+    def _add_from_list(self, list_of_layers):
         '''Adds a given list of layers to the model.
 
         # Arguments
-            list_of_layers: list, passing one at a time to `self.interpret_layer_dict`.
+            list_of_layers: list, passing one at a time to `self._interpret_layer_dict`.
 
         # Raises
             TypeError: if layer parameters is not a dictionary.
@@ -140,10 +140,10 @@ class Gene:
                 msg = "Parameter `input_layer` must be of type <class 'dict'>. Found %s" % (type(input_layer))
                 raise TypeError(msg)
             else:
-                layer = self.interpret_layer_dict(input_layer)
-                self.add_layer_dict_to_model(layer)
+                layer = self._interpret_layer_dict(input_layer)
+                self._add_layer_dict_to_model(layer)
 
-    def add_layer_dict_to_model(self, layer_dictionary):
+    def _add_layer_dict_to_model(self, layer_dictionary):
         '''Receives a one-layer dictionary. Interprets and adds to `self.model`.
 
         # Arguments
@@ -181,7 +181,7 @@ class Gene:
         # add layer specifications to `self.architecture` list
         self.architecture.append(layer_dictionary)
 
-    def interpret_layer_dict(self, layer_dictionary):
+    def _interpret_layer_dict(self, layer_dictionary):
         '''Interprets a single-layer dictionary. If correct parameters exist, pass them to
             `keras_layer_parameters`, else randomly generate from randomization universe.
 
@@ -261,8 +261,3 @@ class Gene:
 
         layer_to_keras = {layer_name: keras_layer_parameters}
         return layer_to_keras
-
-    def clear_memory():
-        '''Delete any large variables from memory. TBD on what they are yet.
-        '''
-        pass
