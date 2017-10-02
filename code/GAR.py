@@ -29,7 +29,7 @@ class Gene:
             dimensionality: true input data dimensionality
 
         # Raises
-            ValueError: if `dimensionality` != 2, or if `max_depth` < `min_depth`
+            ValueError: if `max_depth` < `min_depth`
             TypeError: if input vars are of incorrect type.
         '''
         self.backend = K.backend()
@@ -90,8 +90,6 @@ class Gene:
     def _randomize_layers(self):
         '''Randomize layers until `self.net_depth` is reached. Current workflow: randomized `num_conv_layers`,
             with randomized pooling, and randomized `num_fully_connected`, with randomized dropout.
-
-            Only supporting 2D convolutional nets at the moment.
         '''
         if self.dimensionality == 2:
             # randomize number of convolutional layers
@@ -128,7 +126,7 @@ class Gene:
             list_of_layers: list, passing one at a time to `self._interpret_layer_dict`.
 
         # Raises
-            TypeError: if layer parameters is not a dictionary.
+            TypeError: if layer parameters variable is not a dictionary.
         '''
         for input_layer in list_of_layers:
             if type(input_layer) != dict:
