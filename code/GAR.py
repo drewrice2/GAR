@@ -22,8 +22,10 @@ class Gene:
         '''Accepts relevant variables, type checks.
 
         # Arguments
-            net_must_start_with: list of dictionaries with shape: [{'layer_name':{'param_name':parameter}}]
-            net_must_end_with: list of dictionaries. [{'layer_name':{'param_name':parameter}}]
+            net_must_start_with: list of dictionaries with shape:
+                [{'layer_name':{'param_name':parameter}}]
+            net_must_end_with: list of dictionaries. with shape:
+                [{'layer_name':{'param_name':parameter}}]
             min_depth: minimum number of *core* layers for the net
             max_depth: maximum number of *core* layers for the net
             dimensionality: true input data dimensionality
@@ -52,25 +54,33 @@ class Gene:
         def _typecheck_and_error_handle():
             # initial type checking
             if type(self.dimensionality) != int:
-                msg = "Parameter `dimensionality` must be of type <class 'int'>. Found %s" % (type(self.dimensionality))
+                msg = "Parameter `dimensionality` must be type <class 'int'>. \
+                    Found %s" % (type(self.dimensionality))
                 raise TypeError(msg)
             if type(self.min_depth) != int:
-                msg = "Parameter `min_depth` must be of type <class 'int'>. Found %s" % (type(self.min_depth))
+                msg = "Parameter `min_depth` must be of type <class 'int'>. \
+                    Found %s" % (type(self.min_depth))
                 raise TypeError(msg)
             if type(self.max_depth) != int:
-                msg = "Parameter `max_depth` must be of type <class 'int'>. Found %s" % (type(self.max_depth))
+                msg = "Parameter `max_depth` must be of type <class 'int'>. \
+                    Found %s" % (type(self.max_depth))
                 raise TypeError(msg)
             if type(self.net_must_start_with) != list:
-                msg = "Parameter `net_must_start_with` must be of type <class 'list'>. Found %s" % (type(self.net_must_start_with))
+                msg = "Parameter `net_must_start_with` must be of type <class \
+                    'list'>. Found %s" % (type(self.net_must_start_with))
                 raise TypeError(msg)
             if type(self.net_must_end_with) != list:
-                msg = "Parameter `net_must_end_with` must be of type <class 'list'>. Found %s" % (type(self.net_must_end_with))
+                msg = "Parameter `net_must_end_with` must be of type <class \
+                    'list'>. Found %s" % (type(self.net_must_end_with))
                 raise TypeError(msg)
             if self.max_depth < self.min_depth:
-                msg = "Parameter `max_depth` must be greater than or equal to `min_depth`."
+                msg = "Parameter `max_depth` must be greater than or equal to \
+                    `min_depth`."
                 raise ValueError(msg)
-            if (len(self.net_must_start_with) >= self.max_depth) or (len(self.net_must_end_with) >= self.max_depth):
-                msg = "Net size too bit for max_depth. Check parameters: `max_depth`, `net_must_start_with`, `net_must_end_with`."
+            if (len(self.net_must_start_with) >= self.max_depth) or \
+                        (len(self.net_must_end_with) >= self.max_depth):
+                msg = "Net size too bit for max_depth. Check parameters: \
+                    `max_depth`, `net_must_start_with`, `net_must_end_with`."
                 raise ValueError(msg)
         # run typechecking
         _typecheck_and_error_handle()
@@ -80,7 +90,8 @@ class Gene:
 
         # Returns
             model: an uncompiled Keras model object with GAR randomized layers
-            architecture: list of dictionaries for calling GAR on, or for logging purposes
+            architecture: list of dictionaries for calling GAR on, or for
+                logging purposes
         '''
         self._add_from_list(self.net_must_start_with)
         self._randomize_layers()
@@ -88,12 +99,13 @@ class Gene:
         return self.model, self.architecture
 
     def _randomize_layers(self):
-        '''Randomize layers until `self.net_depth` is reached. Current workflow: randomized `num_conv_layers`,
-            with randomized pooling, and randomized `num_fully_connected`, with randomized dropout.
+        '''Randomize layers until `self.net_depth` is reached. Current
+            workflow: randomized `num_conv_layers`, with randomized pooling,
+            and randomized `num_fully_connected`, with randomized dropout.
         '''
         if self.dimensionality == 2:
             # randomize number of convolutional layers
-            num_conv_layers = int(self.net_depth * np.random.uniform()) # np.random.normal(loc=0.5,scale=0.1))
+            num_conv_layers = int(self.net_depth * np.random.uniform())
             # add convolutional layers to model
             for _ in range(num_conv_layers):
                 layer = self._interpret_layer_dict({'conv2d':{}})
@@ -123,14 +135,16 @@ class Gene:
         '''Adds a given list of layers to the model.
 
         # Arguments
-            list_of_layers: list, passing one at a time to `self._interpret_layer_dict`.
+            list_of_layers: list, passing one at a time to
+            `self._interpret_layer_dict`.
 
         # Raises
             TypeError: if layer parameters variable is not a dictionary.
         '''
         for input_layer in list_of_layers:
             if type(input_layer) != dict:
-                msg = "Parameter `input_layer` must be of type <class 'dict'>. Found %s" % (type(input_layer))
+                msg = "Parameter `input_layer` must be of type <class 'dict'>. \
+                    Found %s" % (type(input_layer))
                 raise TypeError(msg)
             else:
                 layer = self._interpret_layer_dict(input_layer)
@@ -140,7 +154,8 @@ class Gene:
         '''Receives a one-layer dictionary. Interprets and adds to `self.model`.
 
         # Arguments
-            layer_dictionary: one-layer dictionary {`layer_name`:{`param_name`:`parameter`}}. Appends
+            layer_dictionary: one-layer dictionary, with shape:
+                {`layer_name`:{`param_name`:`parameter`}}. Appends
                 `layer_dictionary` to `self.architecture` list.
 
         # Raises
@@ -168,19 +183,22 @@ class Gene:
             self.model.add(Flatten())
         # Layer invalid
         else:
-            msg = 'Could not find `%s` in supported layers.' % (layer_dictionary['layer_name'])
+            msg = 'Could not find `%s` in supported layers.' \
+                % (layer_dictionary['layer_name'])
             raise ValueError(msg)
 
         # add layer specifications to `self.architecture` list
         self.architecture.append(layer_dictionary)
 
     def _interpret_layer_dict(self, layer_dictionary):
-        '''Interprets a single-layer dictionary. If correct parameters exist, pass them to
-            `keras_layer_parameters`, else randomly generate from randomization universe.
+        '''Interprets a single-layer dictionary. If correct parameters exist,
+            pass them to `keras_layer_parameters`, else randomly generate from
+            randomization universe.
 
         # Returns
-            layer_to_keras: dictionary of shape {`layer_name`:{`param_name`: `parameter`}}
-                where the `parameters` dict is fed directly into a Keras layer object
+            layer_to_keras: dictionary with shape:
+                {`layer_name`:{`param_name`: `parameter`}}, where the
+                `parameters` dict is fed directly into a Keras layer object
 
         # TODO: support Conv1D, LocallyConnected1D, LocallyConnected2D
         '''
