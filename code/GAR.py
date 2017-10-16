@@ -19,7 +19,7 @@ class Gene:
 
     def __init__(self, net_must_start_with, net_must_end_with, min_depth=4,
             max_depth=7, dimensionality=2):
-        '''Accepts relevant variables, type checks.
+        '''Accepts relevant variables, type checks, value checks params.
 
         # Arguments
             net_must_start_with: list of dictionaries with shape:
@@ -51,39 +51,36 @@ class Gene:
         self.pool_or_kernel_range_1D = [2,3,5]
         self.activation_funcs = ['relu']
 
-        def _typecheck_and_error_handle():
-            # initial type checking
-            if type(self.dimensionality) != int:
-                msg = "Parameter `dimensionality` must be type <class 'int'>. \
-                    Found %s" % (type(self.dimensionality))
-                raise TypeError(msg)
-            if type(self.min_depth) != int:
-                msg = "Parameter `min_depth` must be of type <class 'int'>. \
-                    Found %s" % (type(self.min_depth))
-                raise TypeError(msg)
-            if type(self.max_depth) != int:
-                msg = "Parameter `max_depth` must be of type <class 'int'>. \
-                    Found %s" % (type(self.max_depth))
-                raise TypeError(msg)
-            if type(self.net_must_start_with) != list:
-                msg = "Parameter `net_must_start_with` must be of type <class \
-                    'list'>. Found %s" % (type(self.net_must_start_with))
-                raise TypeError(msg)
-            if type(self.net_must_end_with) != list:
-                msg = "Parameter `net_must_end_with` must be of type <class \
-                    'list'>. Found %s" % (type(self.net_must_end_with))
-                raise TypeError(msg)
-            if self.max_depth < self.min_depth:
-                msg = "Parameter `max_depth` must be greater than or equal to \
-                    `min_depth`."
-                raise ValueError(msg)
-            if (len(self.net_must_start_with) >= self.max_depth) or \
-                        (len(self.net_must_end_with) >= self.max_depth):
-                msg = "Net size too bit for max_depth. Check parameters: \
-                    `max_depth`, `net_must_start_with`, `net_must_end_with`."
-                raise ValueError(msg)
-        # run typechecking
-        _typecheck_and_error_handle()
+        # parameter type & value checking
+        if type(self.dimensionality) != int:
+            msg = "Parameter `dimensionality` must be type <class 'int'>. \
+                Found %s" % (type(self.dimensionality))
+            raise TypeError(msg)
+        if type(self.min_depth) != int:
+            msg = "Parameter `min_depth` must be of type <class 'int'>. \
+                Found %s" % (type(self.min_depth))
+            raise TypeError(msg)
+        if type(self.max_depth) != int:
+            msg = "Parameter `max_depth` must be of type <class 'int'>. \
+                Found %s" % (type(self.max_depth))
+            raise TypeError(msg)
+        if type(self.net_must_start_with) != list:
+            msg = "Parameter `net_must_start_with` must be of type <class \
+                'list'>. Found %s" % (type(self.net_must_start_with))
+            raise TypeError(msg)
+        if type(self.net_must_end_with) != list:
+            msg = "Parameter `net_must_end_with` must be of type <class \
+                'list'>. Found %s" % (type(self.net_must_end_with))
+            raise TypeError(msg)
+        if self.max_depth < self.min_depth:
+            msg = "Parameter `max_depth` must be greater than or equal to \
+                `min_depth`."
+            raise ValueError(msg)
+        if (len(self.net_must_start_with) >= self.max_depth) or \
+                    (len(self.net_must_end_with) >= self.max_depth):
+            msg = "Net size too bit for max_depth. Check parameters: \
+                `max_depth`, `net_must_start_with`, `net_must_end_with`."
+            raise ValueError(msg)
 
     def build(self):
         '''Runs all network randomization and building.
